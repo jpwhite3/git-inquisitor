@@ -93,6 +93,13 @@ func (hra *HtmlReportAdapter) PrepareData(data *models.CollectedData) error {
 		"ToUpper":      strings.ToUpper,
 		"Capitalize":   capitalize, // Using our own capitalize function instead of deprecated strings.Title
 		"Replace":      strings.ReplaceAll,
+		"json": func(v interface{}) string {
+			jsonBytes, err := json.Marshal(v)
+			if err != nil {
+				return "[]"
+			}
+			return string(jsonBytes)
+		},
 		"Truncate": func(s string, length int, killwords bool, end string) string { // Basic truncate
 			if len(s) <= length {
 				return s

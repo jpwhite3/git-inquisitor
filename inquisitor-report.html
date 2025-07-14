@@ -1,0 +1,1520 @@
+
+
+
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Git-Inquisitor | Report: b9433a1e</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+        <style type="text/css">
+            .table-sm tbody tr td, .table-sm thead tr th {
+                font-size: 85%;
+            }
+            div.overflow-y-scroll {
+                overflow-y: scroll;
+                max-height: 600px;
+            }
+            .rotate-90 {
+                transform: rotate(90deg);
+            }
+            .invert-color{
+                filter: invert(100%);
+            }
+            @media print {
+                div.overflow-y-scroll {
+                    overflow: visible!important;
+                    max-height: none!important;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#"> Git Logo</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#top">Git-Inquisitor v0.1.0-go</a> 
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container my-5">
+            <h1 class="display-4">Inquisitor Report: b9433a1e</h1>
+            <hr>
+            <div class="row">
+                <div class="col-lg-6 col-sm-12 my-3">
+                    <div class="card h-100 border-dark" id="repo-info">
+                        <div class="card-header text-bg-dark">
+                            Repository Information
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive overflow-y-scroll">
+                                <table class="table table-sm">
+                                    <tbody class="">
+                                        <tr><th>URL</th><td>git@github.com:jpwhite3/git-inquisitor</td></tr>
+                                        <tr><th>Branch</th><td>go-translation</td></tr>
+                                        <tr>
+                                            <th scope="col" style="vertical-align: top;">Commit</th>
+                                            <td>
+                                                <table class="table table-sm table-borderless">
+                                                    <tbody>
+                                                        <tr><th scope="row" class="px-0">SHA</th><td class="px-0">b9433a1ea676d74793ddcabf4437d99ed0cfea73</td></tr>
+                                                        <tr><th scope="row" class="px-0">Date</th><td class="px-0">2025-07-14 21:50:23 &#43;0000</td></tr>
+                                                        <tr><th scope="row" class="px-0">Tree</th><td class="px-0">733e8a1bbb0859c37a40dafe411bd3ae9a1f5615</td></tr>
+                                                        <tr><th scope="row" class="px-0">Contributor</th><td class="px-0">google-labs-jules[bot] (161369871&#43;google-labs-jules[bot]@users.noreply.github.com)</td></tr>
+                                                        <tr><th scope="row" class="px-0">Message</th><td class="px-0">I&#39;ve identified a few areas for improvement in the Makefile...</td></tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-sm-12 my-3">
+                    <div class="card h-100 border-dark" id="collector-info">
+                        <div class="card-header text-bg-dark">
+                            Collector Information
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive overflow-y-scroll" style="max-height: 300px;">
+                                <table class="table table-sm">
+                                    <tbody class="">
+                                        <tr><th>Inquisitor Version</th><td>0.1.0-go</td></tr>
+                                        <tr><th>Date Collected</th><td>2025-07-14 21:59:10 UTC</td></tr>
+                                        <tr><th>User</th><td>jpwhite</td></tr>
+                                        <tr><th>Hostname</th><td>jpw3-MacBook-6.local</td></tr>
+                                        <tr><th>Platform</th><td>darwin/arm64</td></tr>
+                                        <tr><th>Go Version</th><td>go1.24.4</td></tr>
+                                        <tr><th>Git Version</th><td>go-git (pure Go)</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2 class="display-5 mt-3">Activity at a glance</h2>
+            <hr>
+            <div class="row">
+                <div class="col-lg-4 col-sm-12 my-3">
+                    <div class="card h-100 border-dark" id="commits-by-contributor">
+                        <div class="card-header text-bg-dark">
+                            Contributions by Author
+                        </div>
+                        <div class="card-body">
+                            <canvas id="commitsChart" width="400" height="300"></canvas>
+                            <hr>
+                            <canvas id="changesChart" width="400" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8 col-sm-12 my-3">
+                    <div class="card h-100 border-dark" id="commit-history-graph">
+                        <div class="card-header text-bg-dark">
+                            Change Frequency
+                        </div>
+                        <div class="card-body">
+                            <canvas id="commitHistoryChart" width="600" height="300"></canvas>
+                            <hr class="my-5">
+                            <canvas id="changeHistoryChart" width="600" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2 class="display-5 mt-3">Contributors</h2>
+            <hr>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4">
+                
+                <div class="col">
+                    <div class="card mb-3 border-dark h-100">
+                        <div class="card-header text-bg-dark">
+                            <span class="text-primary me-2">
+                                <img width="16" height="16" class="img-fluid invert-color" alt="GitHub" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48IS0tIUZvbnQgQXdlc29tZSBGcmVlIDYuNS4xIGJ5IEBmb250YXdlc29tZSAtIGh0dHBzOi8vZm9udGF3ZXNvbWUuY29tIExpY2Vuc2UgLSBodHRwczovL2ZvbnRhd2Vzb21lLmNvbS9saWNlbnNlL2ZyZWUgQ29weXJpZ2h0IDIwMjQgRm9udGljb25zLCBJbmMuLS0+PHBhdGggZD0iTTI1NiAyODhBMTQ0IDE0NCAwIDEgMCAyNTYgMGExNDQgMTQ0IDAgMSAwIDAgMjg4em0tOTQuNyAzMkM3Mi4yIDMyMCAwIDM5Mi4yIDAgNDgxLjNjMCAxNyAxMy44IDMwLjcgMzAuNyAzMC43SDQ4MS4zYzE3IDAgMzAuNy0xMy44IDMwLjctMzAuN0M1MTIgMzkyLjIgNDM5LjggMzIwIDM1MC43IDMyMEgxNjEuM3oiLz48L3N2Zz4=">
+                            </span>
+                            GitHub
+                        </div>
+                        <div class="card-body px-1">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item py-1">
+                                    
+                                    <small class="">3 Commits</small>
+                                </li>
+                                <li class="list-group-item py-1">
+                                    <small class="text-success">+&nbsp;181 Insertions</small>
+                                </li>
+                                <li class="list-group-item py-1">
+                                    <small class="text-danger">-&nbsp;140 Deletions</small>
+                                </li>
+                                <li class="list-group-item py-1">
+                                    <small class="text-primary">0 Active Lines</small>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col">
+                    <div class="card mb-3 border-dark h-100">
+                        <div class="card-header text-bg-dark">
+                            <span class="text-primary me-2">
+                                <img width="16" height="16" class="img-fluid invert-color" alt="JP White" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48IS0tIUZvbnQgQXdlc29tZSBGcmVlIDYuNS4xIGJ5IEBmb250YXdlc29tZSAtIGh0dHBzOi8vZm9udGF3ZXNvbWUuY29tIExpY2Vuc2UgLSBodHRwczovL2ZvbnRhd2Vzb21lLmNvbS9saWNlbnNlL2ZyZWUgQ29weXJpZ2h0IDIwMjQgRm9udGljb25zLCBJbmMuLS0+PHBhdGggZD0iTTI1NiAyODhBMTQ0IDE0NCAwIDEgMCAyNTYgMGExNDQgMTQ0IDAgMSAwIDAgMjg4em0tOTQuNyAzMkM3Mi4yIDMyMCAwIDM5Mi4yIDAgNDgxLjNjMCAxNyAxMy44IDMwLjcgMzAuNyAzMC43SDQ4MS4zYzE3IDAgMzAuNy0xMy44IDMwLjctMzAuN0M1MTIgMzkyLjIgNDM5LjggMzIwIDM1MC43IDMyMEgxNjEuM3oiLz48L3N2Zz4=">
+                            </span>
+                            JP White
+                        </div>
+                        <div class="card-body px-1">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item py-1">
+                                    
+                                    <small class="">38 Commits</small>
+                                </li>
+                                <li class="list-group-item py-1">
+                                    <small class="text-success">+&nbsp;43560 Insertions</small>
+                                </li>
+                                <li class="list-group-item py-1">
+                                    <small class="text-danger">-&nbsp;248 Deletions</small>
+                                </li>
+                                <li class="list-group-item py-1">
+                                    <small class="text-primary">0 Active Lines</small>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col">
+                    <div class="card mb-3 border-dark h-100">
+                        <div class="card-header text-bg-dark">
+                            <span class="text-primary me-2">
+                                <img width="16" height="16" class="img-fluid invert-color" alt="google-labs-jules[bot]" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48IS0tIUZvbnQgQXdlc29tZSBGcmVlIDYuNS4xIGJ5IEBmb250YXdlc29tZSAtIGh0dHBzOi8vZm9udGF3ZXNvbWUuY29tIExpY2Vuc2UgLSBodHRwczovL2ZvbnRhd2Vzb21lLmNvbS9saWNlbnNlL2ZyZWUgQ29weXJpZ2h0IDIwMjQgRm9udGljb25zLCBJbmMuLS0+PHBhdGggZD0iTTI1NiAyODhBMTQ0IDE0NCAwIDEgMCAyNTYgMGExNDQgMTQ0IDAgMSAwIDAgMjg4em0tOTQuNyAzMkM3Mi4yIDMyMCAwIDM5Mi4yIDAgNDgxLjNjMCAxNyAxMy44IDMwLjcgMzAuNyAzMC43SDQ4MS4zYzE3IDAgMzAuNy0xMy44IDMwLjctMzAuN0M1MTIgMzkyLjIgNDM5LjggMzIwIDM1MC43IDMyMEgxNjEuM3oiLz48L3N2Zz4=">
+                            </span>
+                            google-labs-jules[bot]
+                        </div>
+                        <div class="card-body px-1">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item py-1">
+                                    
+                                    <small class="">1 Commits</small>
+                                </li>
+                                <li class="list-group-item py-1">
+                                    <small class="text-success">+&nbsp;3 Insertions</small>
+                                </li>
+                                <li class="list-group-item py-1">
+                                    <small class="text-danger">-&nbsp;1 Deletions</small>
+                                </li>
+                                <li class="list-group-item py-1">
+                                    <small class="text-primary">0 Active Lines</small>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <h2 class="display-5 mt-3">Files</h2>
+            <hr>
+            <div class="row">
+                <div class="col-lg-12 my-3">
+                    <div class="card h-100 border-dark" id="file-stats">
+                        <div class="card-header text-bg-dark">
+                            Tree 733e8a1b
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive overflow-y-scroll">
+                                <table class="table table-striped table-hover table-sm caption-top">
+                                    <caption>Excludes binary and zero length files.</caption>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">File Path</th>
+                                            <th scope="col">Date Introduced</th>
+                                            <th scope="col">Total Commits</th>
+                                            <th scope="col">Total Lines</th>
+                                            <th scope="col">Top Contributor</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-group-divider">
+                                        
+                                            
+                                            <tr>
+                                                <td>.github/workflows/python-app.yml</td>
+                                                <td>2024-07-21</td>
+                                                <td>6</td>
+                                                <td>56</td>
+                                                <td>
+                                                    <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="
+                                                    
+                                                        jpwhite3@gmail.com: 44 lines<br>
+                                                    
+                                                        jpwhite3@users.noreply.github.com: 12 lines<br>
+                                                    
+                                                    ">
+                                                        jpwhite3@gmail.com (78.57%)
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            
+                                        
+                                            
+                                            <tr>
+                                                <td>.github/workflows/python-release.yml</td>
+                                                <td>2024-07-26</td>
+                                                <td>8</td>
+                                                <td>61</td>
+                                                <td>
+                                                    <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="
+                                                    
+                                                        jpwhite3@gmail.com: 61 lines<br>
+                                                    
+                                                    ">
+                                                        jpwhite3@gmail.com (100.00%)
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            
+                                        
+                                            
+                                            <tr>
+                                                <td>.gitignore</td>
+                                                <td>2025-07-14</td>
+                                                <td>2</td>
+                                                <td>162</td>
+                                                <td>
+                                                    <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="
+                                                    
+                                                        161369871&#43;google-labs-jules[bot]@users.noreply.github.com: 3 lines<br>
+                                                    
+                                                        jpwhite3@gmail.com: 159 lines<br>
+                                                    
+                                                    ">
+                                                        jpwhite3@gmail.com (98.15%)
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            
+                                        
+                                            
+                                            <tr>
+                                                <td>CODE_OF_CONDUCT.md</td>
+                                                <td>2024-07-21</td>
+                                                <td>1</td>
+                                                <td>70</td>
+                                                <td>
+                                                    <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="
+                                                    
+                                                        jpwhite3@gmail.com: 70 lines<br>
+                                                    
+                                                    ">
+                                                        jpwhite3@gmail.com (100.00%)
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            
+                                        
+                                            
+                                            <tr>
+                                                <td>CONTRIBUTING.md</td>
+                                                <td>2024-07-21</td>
+                                                <td>1</td>
+                                                <td>172</td>
+                                                <td>
+                                                    <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="
+                                                    
+                                                        jpwhite3@gmail.com: 172 lines<br>
+                                                    
+                                                    ">
+                                                        jpwhite3@gmail.com (100.00%)
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            
+                                        
+                                            
+                                            <tr>
+                                                <td>Makefile</td>
+                                                <td>2025-07-14</td>
+                                                <td>6</td>
+                                                <td>93</td>
+                                                <td>
+                                                    <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="
+                                                    
+                                                        161369871&#43;google-labs-jules[bot]@users.noreply.github.com: 3 lines<br>
+                                                    
+                                                        jpwhite3@gmail.com: 90 lines<br>
+                                                    
+                                                    ">
+                                                        jpwhite3@gmail.com (96.77%)
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            
+                                        
+                                            
+                                            <tr>
+                                                <td>README.md</td>
+                                                <td>2024-07-26</td>
+                                                <td>4</td>
+                                                <td>65</td>
+                                                <td>
+                                                    <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="
+                                                    
+                                                        jpwhite3@gmail.com: 65 lines<br>
+                                                    
+                                                    ">
+                                                        jpwhite3@gmail.com (100.00%)
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            
+                                        
+                                            
+                                            <tr>
+                                                <td>cmd/git-inquisitor/main.go</td>
+                                                <td>2025-07-14</td>
+                                                <td>2</td>
+                                                <td>163</td>
+                                                <td>
+                                                    <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="
+                                                    
+                                                        jpwhite3@gmail.com: 163 lines<br>
+                                                    
+                                                    ">
+                                                        jpwhite3@gmail.com (100.00%)
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            
+                                        
+                                            
+                                            <tr>
+                                                <td>go.mod</td>
+                                                <td>2025-07-14</td>
+                                                <td>1</td>
+                                                <td>45</td>
+                                                <td>
+                                                    <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="
+                                                    
+                                                        jpwhite3@gmail.com: 45 lines<br>
+                                                    
+                                                    ">
+                                                        jpwhite3@gmail.com (100.00%)
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            
+                                        
+                                            
+                                            <tr>
+                                                <td>go.sum</td>
+                                                <td>2025-07-14</td>
+                                                <td>1</td>
+                                                <td>137</td>
+                                                <td>
+                                                    <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="
+                                                    
+                                                        jpwhite3@gmail.com: 137 lines<br>
+                                                    
+                                                    ">
+                                                        jpwhite3@gmail.com (100.00%)
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            
+                                        
+                                            
+                                            <tr>
+                                                <td>internal/chart/chart.go</td>
+                                                <td>2025-07-14</td>
+                                                <td>2</td>
+                                                <td>267</td>
+                                                <td>
+                                                    <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="
+                                                    
+                                                        jpwhite3@gmail.com: 267 lines<br>
+                                                    
+                                                    ">
+                                                        jpwhite3@gmail.com (100.00%)
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            
+                                        
+                                            
+                                            <tr>
+                                                <td>internal/chart/chart_test.go</td>
+                                                <td>2025-07-14</td>
+                                                <td>1</td>
+                                                <td>122</td>
+                                                <td>
+                                                    <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="
+                                                    
+                                                        jpwhite3@gmail.com: 122 lines<br>
+                                                    
+                                                    ">
+                                                        jpwhite3@gmail.com (100.00%)
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            
+                                        
+                                            
+                                            <tr>
+                                                <td>internal/collector/collector.go</td>
+                                                <td>2025-07-14</td>
+                                                <td>2</td>
+                                                <td>418</td>
+                                                <td>
+                                                    <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="
+                                                    
+                                                        jpwhite3@gmail.com: 418 lines<br>
+                                                    
+                                                    ">
+                                                        jpwhite3@gmail.com (100.00%)
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            
+                                        
+                                            
+                                            <tr>
+                                                <td>internal/collector/collector_test.go</td>
+                                                <td>2025-07-14</td>
+                                                <td>2</td>
+                                                <td>178</td>
+                                                <td>
+                                                    <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="
+                                                    
+                                                        jpwhite3@gmail.com: 178 lines<br>
+                                                    
+                                                    ">
+                                                        jpwhite3@gmail.com (100.00%)
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            
+                                        
+                                            
+                                            <tr>
+                                                <td>internal/models/models.go</td>
+                                                <td>2025-07-14</td>
+                                                <td>2</td>
+                                                <td>99</td>
+                                                <td>
+                                                    <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="
+                                                    
+                                                        jpwhite3@gmail.com: 99 lines<br>
+                                                    
+                                                    ">
+                                                        jpwhite3@gmail.com (100.00%)
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            
+                                        
+                                            
+                                            <tr>
+                                                <td>internal/report/report.go</td>
+                                                <td>2025-07-14</td>
+                                                <td>2</td>
+                                                <td>208</td>
+                                                <td>
+                                                    <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="
+                                                    
+                                                        jpwhite3@gmail.com: 208 lines<br>
+                                                    
+                                                    ">
+                                                        jpwhite3@gmail.com (100.00%)
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            
+                                        
+                                            
+                                            <tr>
+                                                <td>internal/report/report_test.go</td>
+                                                <td>2025-07-14</td>
+                                                <td>2</td>
+                                                <td>258</td>
+                                                <td>
+                                                    <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="
+                                                    
+                                                        jpwhite3@gmail.com: 258 lines<br>
+                                                    
+                                                    ">
+                                                        jpwhite3@gmail.com (100.00%)
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            
+                                        
+                                            
+                                            <tr>
+                                                <td>internal/version/version.go</td>
+                                                <td>2025-07-14</td>
+                                                <td>1</td>
+                                                <td>4</td>
+                                                <td>
+                                                    <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="
+                                                    
+                                                        161369871&#43;google-labs-jules[bot]@users.noreply.github.com: 4 lines<br>
+                                                    
+                                                    ">
+                                                        161369871&#43;google-labs-jules[bot]@users.noreply.github.com (100.00%)
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            
+                                        
+                                            
+                                            <tr>
+                                                <td>pkg/gitutil/gitutil.go</td>
+                                                <td>2025-07-14</td>
+                                                <td>2</td>
+                                                <td>335</td>
+                                                <td>
+                                                    <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="
+                                                    
+                                                        jpwhite3@gmail.com: 335 lines<br>
+                                                    
+                                                    ">
+                                                        jpwhite3@gmail.com (100.00%)
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            
+                                        
+                                            
+                                            <tr>
+                                                <td>pkg/gitutil/gitutil_test.go</td>
+                                                <td>2025-07-14</td>
+                                                <td>2</td>
+                                                <td>515</td>
+                                                <td>
+                                                    <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="
+                                                    
+                                                        jpwhite3@gmail.com: 515 lines<br>
+                                                    
+                                                    ">
+                                                        jpwhite3@gmail.com (100.00%)
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            
+                                        
+                                            
+                                            <tr>
+                                                <td>templates/report.html.template</td>
+                                                <td>2025-07-14</td>
+                                                <td>1</td>
+                                                <td>286</td>
+                                                <td>
+                                                    <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="
+                                                    
+                                                        jpwhite3@gmail.com: 286 lines<br>
+                                                    
+                                                    ">
+                                                        jpwhite3@gmail.com (100.00%)
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2 class="display-5 mt-3">History</h2>
+            <hr>
+            <div class="row">
+                <div class="col-lg-12 my-3">
+                    <div class="card h-100 border-dark" id="commit-history">
+                        <div class="card-header text-bg-dark">
+                            History of b9433a1e
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive overflow-y-scroll">
+                                <table class="table table-striped table-hover table-sm caption-top">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Commit</th>
+                                            <th scope="col">Date</th>
+                                            <th scope="col">Contributor</th>
+                                            <th scope="col">Message</th>
+                                            <th scope="col">Files</th>
+                                            <th scope="col">Insertions</th>
+                                            <th scope="col">Deletions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-group-divider">
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="b9433a1ea676d74793ddcabf4437d99ed0cfea73">
+                                                    b9433a1e
+                                                </small>
+                                            </td>
+                                            <td>2025-07-14 21:50:23 &#43;0000</td>
+                                            <td>google-labs-jules[bot]</td> 
+                                            <td>I&#39;ve identified a few areas for improvement in the Makefile...</td>
+                                            <td class="text-primary">3</td>
+                                            <td class="text-success">+&nbsp;3</td>
+                                            <td class="text-danger">-&nbsp;1</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="12ba38b34e7a056f63dbb215795d9f34e35178f8">
+                                                    12ba38b3
+                                                </small>
+                                            </td>
+                                            <td>2025-07-14 22:37:43 BST</td>
+                                            <td>JP White</td> 
+                                            <td>Fixed all lint errors</td>
+                                            <td class="text-primary">11</td>
+                                            <td class="text-success">+&nbsp;69</td>
+                                            <td class="text-danger">-&nbsp;49</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="e32f94d401ab8547524e8632b15823a272f37928">
+                                                    e32f94d4
+                                                </small>
+                                            </td>
+                                            <td>2025-07-14 21:56:48 BST</td>
+                                            <td>JP White</td> 
+                                            <td>Translated to GO</td>
+                                            <td class="text-primary">26</td>
+                                            <td class="text-success">+&nbsp;0</td>
+                                            <td class="text-danger">-&nbsp;59</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="78f31468d55eaedf5ef016069dda0c792c0784c9">
+                                                    78f31468
+                                                </small>
+                                            </td>
+                                            <td>2024-07-26 16:58:02 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Attempting release</td>
+                                            <td class="text-primary">2</td>
+                                            <td class="text-success">+&nbsp;3</td>
+                                            <td class="text-danger">-&nbsp;3</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="ab97a557bd7cee08b9b5231772060f30890875dc">
+                                                    ab97a557
+                                                </small>
+                                            </td>
+                                            <td>2024-07-26 16:45:46 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Testing build process</td>
+                                            <td class="text-primary">2</td>
+                                            <td class="text-success">+&nbsp;1</td>
+                                            <td class="text-danger">-&nbsp;1</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="4c6802d47b4743199f6d5023a1aecb910c9b1641">
+                                                    4c6802d4
+                                                </small>
+                                            </td>
+                                            <td>2024-07-26 16:25:37 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Testing build</td>
+                                            <td class="text-primary">2</td>
+                                            <td class="text-success">+&nbsp;1</td>
+                                            <td class="text-danger">-&nbsp;1</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="d18c8346dea32a513073625d2434afda66bbcda2">
+                                                    d18c8346
+                                                </small>
+                                            </td>
+                                            <td>2024-07-26 16:16:32 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Normalizing date format for version strings</td>
+                                            <td class="text-primary">5</td>
+                                            <td class="text-success">+&nbsp;2</td>
+                                            <td class="text-danger">-&nbsp;2</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="2158b14d5e80bee64d19ea04960c100f322d56bf">
+                                                    2158b14d
+                                                </small>
+                                            </td>
+                                            <td>2024-07-26 15:51:35 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Changing working directory for release</td>
+                                            <td class="text-primary">1</td>
+                                            <td class="text-success">+&nbsp;2</td>
+                                            <td class="text-danger">-&nbsp;1</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="c8966f3007dac071c79c75e69c28c622a67c093b">
+                                                    c8966f30
+                                                </small>
+                                            </td>
+                                            <td>2024-07-26 15:46:07 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Adding permissions to release process</td>
+                                            <td class="text-primary">1</td>
+                                            <td class="text-success">+&nbsp;1</td>
+                                            <td class="text-danger">-&nbsp;1</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="4f577ff76fa025f30fde64d31c6f87e8f7f058cd">
+                                                    4f577ff7
+                                                </small>
+                                            </td>
+                                            <td>2024-07-26 15:34:26 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Fixing syntax issue in build</td>
+                                            <td class="text-primary">1</td>
+                                            <td class="text-success">+&nbsp;1</td>
+                                            <td class="text-danger">-&nbsp;1</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="8a6ee39d1d1f8d92a175aa760701212b8cfc5f15">
+                                                    8a6ee39d
+                                                </small>
+                                            </td>
+                                            <td>2024-07-26 15:29:15 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Adding version automation</td>
+                                            <td class="text-primary">6</td>
+                                            <td class="text-success">+&nbsp;2</td>
+                                            <td class="text-danger">-&nbsp;2</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="dfa1731589d2f60138b7745891b26b74c28f3b34">
+                                                    dfa17315
+                                                </small>
+                                            </td>
+                                            <td>2024-07-26 14:24:10 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Testing release build</td>
+                                            <td class="text-primary">1</td>
+                                            <td class="text-success">+&nbsp;4</td>
+                                            <td class="text-danger">-&nbsp;0</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="da28771f2ace249d90acef800e214d89b967a487">
+                                                    da28771f
+                                                </small>
+                                            </td>
+                                            <td>2024-07-26 14:16:15 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Updating detached ref string</td>
+                                            <td class="text-primary">1</td>
+                                            <td class="text-success">+&nbsp;1</td>
+                                            <td class="text-danger">-&nbsp;1</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="318445774c4d19f69b1f89ab715ade38afb128c4">
+                                                    31844577
+                                                </small>
+                                            </td>
+                                            <td>2024-07-26 14:13:43 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Add support for detached head</td>
+                                            <td class="text-primary">1</td>
+                                            <td class="text-success">+&nbsp;7</td>
+                                            <td class="text-danger">-&nbsp;2</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="b2c6103c83aba9e76938a93117b39a832fd91eb0">
+                                                    b2c6103c
+                                                </small>
+                                            </td>
+                                            <td>2024-07-25 12:08:03 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Support for detached head state</td>
+                                            <td class="text-primary">1</td>
+                                            <td class="text-success">+&nbsp;16</td>
+                                            <td class="text-danger">-&nbsp;11</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="436751ec48e792b41cf772f5ada0a6589d93ae3c">
+                                                    436751ec
+                                                </small>
+                                            </td>
+                                            <td>2024-07-21 13:51:59 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Testing release workflow</td>
+                                            <td class="text-primary">2</td>
+                                            <td class="text-success">+&nbsp;0</td>
+                                            <td class="text-danger">-&nbsp;17</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="3a92e057ca72166f1f795d578341626186a5230b">
+                                                    3a92e057
+                                                </small>
+                                            </td>
+                                            <td>2024-07-21 13:41:48 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Adding release workflow</td>
+                                            <td class="text-primary">1</td>
+                                            <td class="text-success">+&nbsp;1</td>
+                                            <td class="text-danger">-&nbsp;23</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="0b3ecaa6741ccf0f84be483bc57e6a0701cd76a7">
+                                                    0b3ecaa6
+                                                </small>
+                                            </td>
+                                            <td>2024-07-21 13:40:19 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Adding release workflow</td>
+                                            <td class="text-primary">1</td>
+                                            <td class="text-success">+&nbsp;59</td>
+                                            <td class="text-danger">-&nbsp;0</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="397a2266a90f829a8720bac191f2fd02c00ac47f">
+                                                    397a2266
+                                                </small>
+                                            </td>
+                                            <td>2024-07-21 13:29:06 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>mplementing release workflow</td>
+                                            <td class="text-primary">3</td>
+                                            <td class="text-success">+&nbsp;43</td>
+                                            <td class="text-danger">-&nbsp;4</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="de49cfab9464a1f6d8b1db2a26aa26d6690973cd">
+                                                    de49cfab
+                                                </small>
+                                            </td>
+                                            <td>2024-07-21 12:17:34 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Updating actions build to include PyPi publishing</td>
+                                            <td class="text-primary">1</td>
+                                            <td class="text-success">+&nbsp;10</td>
+                                            <td class="text-danger">-&nbsp;0</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="e4ee4c0b7e8d2b17b7d236bce39657c7765dcce3">
+                                                    e4ee4c0b
+                                                </small>
+                                            </td>
+                                            <td>2024-07-21 11:37:29 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Enabling Python matrix build</td>
+                                            <td class="text-primary">1</td>
+                                            <td class="text-success">+&nbsp;5</td>
+                                            <td class="text-danger">-&nbsp;2</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="da1eb2929c0ee2c22b26b009a53fb5c49d198fad">
+                                                    da1eb292
+                                                </small>
+                                            </td>
+                                            <td>2024-07-21 11:32:48 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Fixing typo in README</td>
+                                            <td class="text-primary">1</td>
+                                            <td class="text-success">+&nbsp;1</td>
+                                            <td class="text-danger">-&nbsp;1</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="fe5082b6d338d674a5e68bbd6a187ffe40aa07d8">
+                                                    fe5082b6
+                                                </small>
+                                            </td>
+                                            <td>2024-07-21 11:29:04 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Setting different clone depth</td>
+                                            <td class="text-primary">1</td>
+                                            <td class="text-success">+&nbsp;2</td>
+                                            <td class="text-danger">-&nbsp;0</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="3907368e988518cef95f8eb548914bdc1cec210e">
+                                                    3907368e
+                                                </small>
+                                            </td>
+                                            <td>2024-07-21 10:48:02 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Updating deps and README</td>
+                                            <td class="text-primary">4</td>
+                                            <td class="text-success">+&nbsp;4</td>
+                                            <td class="text-danger">-&nbsp;1</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="017970800aecf3438680cdd9fb6a6e3c44930149">
+                                                    01797080
+                                                </small>
+                                            </td>
+                                            <td>2024-04-26 22:54:21 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Configuring tests</td>
+                                            <td class="text-primary">1</td>
+                                            <td class="text-success">+&nbsp;0</td>
+                                            <td class="text-danger">-&nbsp;7</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="98aeccec782140f7a4dbd899ecca5a9bb41b4925">
+                                                    98aeccec
+                                                </small>
+                                            </td>
+                                            <td>2024-04-26 22:52:37 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Configuring tests</td>
+                                            <td class="text-primary">2</td>
+                                            <td class="text-success">+&nbsp;8</td>
+                                            <td class="text-danger">-&nbsp;1</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="88e34705b68ccc780b707ea0cc19de1e1031d8b4">
+                                                    88e34705
+                                                </small>
+                                            </td>
+                                            <td>2024-04-26 22:42:20 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Configuring tests</td>
+                                            <td class="text-primary">1</td>
+                                            <td class="text-success">+&nbsp;0</td>
+                                            <td class="text-danger">-&nbsp;8</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="01cb173dedd978abd3644cbe879ea93cd6bf64e1">
+                                                    01cb173d
+                                                </small>
+                                            </td>
+                                            <td>2024-04-26 22:39:27 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Configuring tests</td>
+                                            <td class="text-primary">1</td>
+                                            <td class="text-success">+&nbsp;1</td>
+                                            <td class="text-danger">-&nbsp;1</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="d53308cdbb6330165798fe4345a2cc0146b79f30">
+                                                    d53308cd
+                                                </small>
+                                            </td>
+                                            <td>2024-04-26 22:38:40 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Configuring tests</td>
+                                            <td class="text-primary">1</td>
+                                            <td class="text-success">+&nbsp;32</td>
+                                            <td class="text-danger">-&nbsp;22</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="58033ec258e3bb9ee624090905363153b351ecce">
+                                                    58033ec2
+                                                </small>
+                                            </td>
+                                            <td>2024-04-26 22:31:27 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Configuring tests</td>
+                                            <td class="text-primary">2</td>
+                                            <td class="text-success">+&nbsp;1</td>
+                                            <td class="text-danger">-&nbsp;1</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="9c31fc06df3f4ee06cd1c96593e29d7f78b44ecb">
+                                                    9c31fc06
+                                                </small>
+                                            </td>
+                                            <td>2024-04-26 22:29:23 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Configuring tests</td>
+                                            <td class="text-primary">1</td>
+                                            <td class="text-success">+&nbsp;0</td>
+                                            <td class="text-danger">-&nbsp;0</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="94b227d1d46bbf921cf8b48a8188b52e8e146e7a">
+                                                    94b227d1
+                                                </small>
+                                            </td>
+                                            <td>2024-04-26 22:11:27 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Configuring tests</td>
+                                            <td class="text-primary">1</td>
+                                            <td class="text-success">+&nbsp;4</td>
+                                            <td class="text-danger">-&nbsp;0</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="473d281ba0e5d8a42d577b999f141898b05439be">
+                                                    473d281b
+                                                </small>
+                                            </td>
+                                            <td>2024-04-26 21:56:41 -0400</td>
+                                            <td>JP White</td> 
+                                            <td>Fixing tests</td>
+                                            <td class="text-primary">2</td>
+                                            <td class="text-success">+&nbsp;2</td>
+                                            <td class="text-danger">-&nbsp;2</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="b361619ef9b04f6edc9a56e069458362af865a57">
+                                                    b361619e
+                                                </small>
+                                            </td>
+                                            <td>2024-04-26 21:48:48 -0400</td>
+                                            <td>GitHub</td> 
+                                            <td>Create python-app.yml</td>
+                                            <td class="text-primary">1</td>
+                                            <td class="text-success">+&nbsp;39</td>
+                                            <td class="text-danger">-&nbsp;0</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="0479184371f324fbdd5481bb050b3cc12cf8fff4">
+                                                    04791843
+                                                </small>
+                                            </td>
+                                            <td>2024-04-24 18:14:09 -0400</td>
+                                            <td>GitHub</td> 
+                                            <td>Merge pull request #1 from...</td>
+                                            <td class="text-primary">1</td>
+                                            <td class="text-success">+&nbsp;71</td>
+                                            <td class="text-danger">-&nbsp;70</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="7f55e43090efcbded180c8e896a7834c6b8e7247">
+                                                    7f55e430
+                                                </small>
+                                            </td>
+                                            <td>2024-04-03 16:33:27 &#43;0000</td>
+                                            <td>GitHub</td> 
+                                            <td>Bump pillow from 10.2.0 to 10.3.0</td>
+                                            <td class="text-primary">1</td>
+                                            <td class="text-success">+&nbsp;71</td>
+                                            <td class="text-danger">-&nbsp;70</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="2459c5e6bdc7dc9e7b4f3946f963459896b3f151">
+                                                    2459c5e6
+                                                </small>
+                                            </td>
+                                            <td>2024-02-09 17:03:59 -0500</td>
+                                            <td>JP White</td> 
+                                            <td>Refactoring release process</td>
+                                            <td class="text-primary">12</td>
+                                            <td class="text-success">+&nbsp;4</td>
+                                            <td class="text-danger">-&nbsp;3</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="25e6a639d19fcbc23470d8a4832c8a2097830a94">
+                                                    25e6a639
+                                                </small>
+                                            </td>
+                                            <td>2024-02-08 17:45:12 -0500</td>
+                                            <td>JP White</td> 
+                                            <td>Adding more tests</td>
+                                            <td class="text-primary">1</td>
+                                            <td class="text-success">+&nbsp;6</td>
+                                            <td class="text-danger">-&nbsp;3</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="0c814772a80907ee8cfbafab45076893e69dc38c">
+                                                    0c814772
+                                                </small>
+                                            </td>
+                                            <td>2024-02-08 17:39:32 -0500</td>
+                                            <td>JP White</td> 
+                                            <td>Adding tests</td>
+                                            <td class="text-primary">10</td>
+                                            <td class="text-success">+&nbsp;160</td>
+                                            <td class="text-danger">-&nbsp;0</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="a433e0a6fc19c301728e25e510d94ef5743677c6">
+                                                    a433e0a6
+                                                </small>
+                                            </td>
+                                            <td>2024-02-08 16:21:13 -0500</td>
+                                            <td>JP White</td> 
+                                            <td>Switch build system to Poetry</td>
+                                            <td class="text-primary">6</td>
+                                            <td class="text-success">+&nbsp;0</td>
+                                            <td class="text-danger">-&nbsp;16</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="dfb7ff41ed04a962bd967cef0305d9a7c26809cf">
+                                                    dfb7ff41
+                                                </small>
+                                            </td>
+                                            <td>2024-02-07 18:07:10 -0500</td>
+                                            <td>JP White</td> 
+                                            <td>Enabling CLI</td>
+                                            <td class="text-primary">13</td>
+                                            <td class="text-success">+&nbsp;2</td>
+                                            <td class="text-danger">-&nbsp;2</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                                
+                                                <small title="2e680e934e0c5f6d1f29a3c4fd5b4dbbe556e9e3">
+                                                    2e680e93
+                                                </small>
+                                            </td>
+                                            <td>2024-02-02 20:03:05 -0500</td>
+                                            <td>JP White</td> 
+                                            <td>Initial commit</td>
+                                            <td class="text-primary">12</td>
+                                            <td class="text-success">+&nbsp;43105</td>
+                                            <td class="text-danger">-&nbsp;0</td>
+                                        </tr>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+        <script type="text/javascript">
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+            
+            
+            document.addEventListener('DOMContentLoaded', function() {
+                
+                const contributorData = {
+                    
+                    "GitHub": {
+                        "commits":  3 ,
+                        "insertions":  181 ,
+                        "deletions":  140 
+                    },
+                    
+                    "JP White": {
+                        "commits":  38 ,
+                        "insertions":  43560 ,
+                        "deletions":  248 
+                    },
+                    
+                    "google-labs-jules[bot]": {
+                        "commits":  1 ,
+                        "insertions":  3 ,
+                        "deletions":  1 
+                    },
+                    
+                };
+                
+                
+                const contributorNames = Object.keys(contributorData);
+                const commitCounts = contributorNames.map(name => contributorData[name].commits);
+                const insertionCounts = contributorNames.map(name => contributorData[name].insertions);
+                const deletionCounts = contributorNames.map(name => contributorData[name].deletions);
+                
+                
+                function generateColors(count) {
+                    const colors = [];
+                    for (let i = 0; i < count; i++) {
+                        const r = Math.floor(Math.random() * 200) + 55;
+                        const g = Math.floor(Math.random() * 200) + 55;
+                        const b = Math.floor(Math.random() * 200) + 55;
+                        colors.push(`rgba(${r}, ${g}, ${b}, 0.7)`);
+                    }
+                    return colors;
+                }
+                
+                const backgroundColors = generateColors(contributorNames.length);
+                
+                
+                new Chart(document.getElementById('commitsChart'), {
+                    type: 'pie',
+                    data: {
+                        labels: contributorNames,
+                        datasets: [{
+                            data: commitCounts,
+                            backgroundColor: backgroundColors,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Commits by Author'
+                            }
+                        }
+                    }
+                });
+                
+                
+                new Chart(document.getElementById('changesChart'), {
+                    type: 'pie',
+                    data: {
+                        labels: contributorNames,
+                        datasets: [{
+                            data: contributorNames.map(name => contributorData[name].insertions + contributorData[name].deletions),
+                            backgroundColor: backgroundColors,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Line Changes by Author'
+                            }
+                        }
+                    }
+                });
+                
+                
+                const historyData = "[{\"commit\":\"b9433a1ea676d74793ddcabf4437d99ed0cfea73\",\"parents\":[\"12ba38b34e7a056f63dbb215795d9f34e35178f8\"],\"tree\":\"733e8a1bbb0859c37a40dafe411bd3ae9a1f5615\",\"contributor\":\"google-labs-jules[bot] (161369871+google-labs-jules[bot]@users.noreply.github.com)\",\"date\":\"2025-07-14T21:50:23Z\",\"message\":\"I've identified a few areas for improvement in the Makefile and build process. I'll add the Go bin directory to the PATH so that `golangci-lint` can be found. I'll also make sure the version directory is created before the version file is written. Finally, I'll add the `bin/` directory to the .gitignore file.\\n\",\"insertions\":3,\"deletions\":1,\"files\":{\".gitignore\":{\"insertions\":13,\"deletions\":7,\"lines\":162},\"Makefile\":{\"insertions\":79,\"deletions\":0,\"lines\":93},\"internal/version/version.go\":{\"insertions\":91,\"deletions\":0,\"lines\":4}}},{\"commit\":\"12ba38b34e7a056f63dbb215795d9f34e35178f8\",\"parents\":[\"e32f94d401ab8547524e8632b15823a272f37928\"],\"tree\":\"e089ac234bf87e84ba60c292b4d4f4237e6c381d\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2025-07-14T22:37:43+01:00\",\"message\":\"Fixed all lint errors\\n\",\"insertions\":69,\"deletions\":49,\"files\":{\"Makefile\":{\"insertions\":2352,\"deletions\":2055,\"lines\":90},\"cmd/git-inquisitor/main.go\":{\"insertions\":11,\"deletions\":0,\"lines\":163},\"git-inquisitor\":{\"insertions\":0,\"deletions\":0,\"lines\":0},\"internal/chart/chart.go\":{\"insertions\":1076,\"deletions\":521,\"lines\":267},\"internal/collector/collector.go\":{\"insertions\":65,\"deletions\":67,\"lines\":418},\"internal/collector/collector_test.go\":{\"insertions\":113,\"deletions\":257,\"lines\":178},\"internal/models/models.go\":{\"insertions\":464,\"deletions\":0,\"lines\":99},\"internal/report/report.go\":{\"insertions\":723,\"deletions\":498,\"lines\":208},\"internal/report/report_test.go\":{\"insertions\":1246,\"deletions\":1084,\"lines\":258},\"pkg/gitutil/gitutil.go\":{\"insertions\":709,\"deletions\":719,\"lines\":335},\"pkg/gitutil/gitutil_test.go\":{\"insertions\":8051,\"deletions\":6383,\"lines\":515}}},{\"commit\":\"e32f94d401ab8547524e8632b15823a272f37928\",\"parents\":[\"78f31468d55eaedf5ef016069dda0c792c0784c9\"],\"tree\":\"a11b556afdd0e54a337ef2c93d029c62a34f5d71\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2025-07-14T21:56:48+01:00\",\"message\":\"Translated to GO\\n\",\"insertions\":0,\"deletions\":59,\"files\":{\"bump_version.py\":{\"insertions\":0,\"deletions\":2097,\"lines\":0},\"cmd/git-inquisitor/main.go\":{\"insertions\":5774,\"deletions\":0,\"lines\":162},\"go.mod\":{\"insertions\":2138,\"deletions\":0,\"lines\":45},\"go.sum\":{\"insertions\":12857,\"deletions\":0,\"lines\":137},\"internal/chart/chart.go\":{\"insertions\":8430,\"deletions\":0,\"lines\":258},\"internal/chart/chart_test.go\":{\"insertions\":4706,\"deletions\":0,\"lines\":122},\"internal/collector/collector.go\":{\"insertions\":13246,\"deletions\":0,\"lines\":418},\"internal/collector/collector_test.go\":{\"insertions\":7203,\"deletions\":0,\"lines\":181},\"internal/models/models.go\":{\"insertions\":3831,\"deletions\":0,\"lines\":89},\"internal/report/report.go\":{\"insertions\":6904,\"deletions\":0,\"lines\":197},\"internal/report/report_test.go\":{\"insertions\":9343,\"deletions\":0,\"lines\":251},\"pkg/gitutil/gitutil.go\":{\"insertions\":12426,\"deletions\":0,\"lines\":337},\"pkg/gitutil/gitutil_test.go\":{\"insertions\":16417,\"deletions\":0,\"lines\":450},\"poetry.lock\":{\"insertions\":0,\"deletions\":101745,\"lines\":0},\"pyproject.toml\":{\"insertions\":0,\"deletions\":853,\"lines\":0},\"src/git_inquisitor/__init__.py\":{\"insertions\":0,\"deletions\":26,\"lines\":0},\"src/git_inquisitor/__main__.py\":{\"insertions\":0,\"deletions\":1219,\"lines\":0},\"src/git_inquisitor/chart.py\":{\"insertions\":0,\"deletions\":3848,\"lines\":0},\"src/git_inquisitor/collector.py\":{\"insertions\":0,\"deletions\":7506,\"lines\":0},\"src/git_inquisitor/report.py\":{\"insertions\":0,\"deletions\":2208,\"lines\":0},\"src/git_inquisitor/templates/html.template\":{\"insertions\":0,\"deletions\":16957,\"lines\":0},\"templates/report.html.template\":{\"insertions\":17928,\"deletions\":0,\"lines\":286},\"tests/__init__.py\":{\"insertions\":0,\"deletions\":0,\"lines\":0},\"tests/test_chart.py\":{\"insertions\":0,\"deletions\":905,\"lines\":0},\"tests/test_collector.py\":{\"insertions\":0,\"deletions\":4065,\"lines\":0},\"tests/test_report.py\":{\"insertions\":0,\"deletions\":1117,\"lines\":0}}},{\"commit\":\"78f31468d55eaedf5ef016069dda0c792c0784c9\",\"parents\":[\"ab97a557bd7cee08b9b5231772060f30890875dc\"],\"tree\":\"d3e363c6ffabea996ea7bd3a99ab66a2b2a2b968\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-07-26T16:58:02-04:00\",\"message\":\"Attempting release\\n\",\"insertions\":3,\"deletions\":3,\"files\":{\".github/workflows/python-release.yml\":{\"insertions\":154,\"deletions\":148,\"lines\":61},\"README.md\":{\"insertions\":234,\"deletions\":131,\"lines\":65}}},{\"commit\":\"ab97a557bd7cee08b9b5231772060f30890875dc\",\"parents\":[\"4c6802d47b4743199f6d5023a1aecb910c9b1641\"],\"tree\":\"9db4e31722d4c9ec5ba3519caadf8d73ba7f1f62\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-07-26T16:45:46-04:00\",\"message\":\"Testing build process\\n\",\"insertions\":1,\"deletions\":1,\"files\":{\".github/workflows/python-release.yml\":{\"insertions\":117,\"deletions\":161,\"lines\":61},\"Makefile\":{\"insertions\":124,\"deletions\":92,\"lines\":70}}},{\"commit\":\"4c6802d47b4743199f6d5023a1aecb910c9b1641\",\"parents\":[\"d18c8346dea32a513073625d2434afda66bbcda2\"],\"tree\":\"b3010a7c1c7f2bc63d0e0a60f2048d8baf1fe794\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-07-26T16:25:37-04:00\",\"message\":\"Testing build\\n\",\"insertions\":1,\"deletions\":1,\"files\":{\".github/workflows/python-release.yml\":{\"insertions\":108,\"deletions\":26,\"lines\":61},\"Makefile\":{\"insertions\":92,\"deletions\":85,\"lines\":69}}},{\"commit\":\"d18c8346dea32a513073625d2434afda66bbcda2\",\"parents\":[\"2158b14d5e80bee64d19ea04960c100f322d56bf\"],\"tree\":\"a7a273789da010fcbb19a488671668046f81d840\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-07-26T16:16:32-04:00\",\"message\":\"Normalizing date format for version strings\\n\",\"insertions\":2,\"deletions\":2,\"files\":{\".github/workflows/python-release.yml\":{\"insertions\":187,\"deletions\":259,\"lines\":61},\"Makefile\":{\"insertions\":675,\"deletions\":188,\"lines\":69},\"bump_version.py\":{\"insertions\":57,\"deletions\":55,\"lines\":59},\"pyproject.toml\":{\"insertions\":22,\"deletions\":23,\"lines\":37},\"src/git_inquisitor/__init__.py\":{\"insertions\":26,\"deletions\":27,\"lines\":1}}},{\"commit\":\"2158b14d5e80bee64d19ea04960c100f322d56bf\",\"parents\":[\"c8966f3007dac071c79c75e69c28c622a67c093b\"],\"tree\":\"8bcf5afe52bd7a08e3ae3f6a213b2e119bd4e995\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-07-26T15:51:35-04:00\",\"message\":\"Changing working directory for release\\n\",\"insertions\":2,\"deletions\":1,\"files\":{\".github/workflows/python-release.yml\":{\"insertions\":189,\"deletions\":165,\"lines\":61}}},{\"commit\":\"c8966f3007dac071c79c75e69c28c622a67c093b\",\"parents\":[\"4f577ff76fa025f30fde64d31c6f87e8f7f058cd\"],\"tree\":\"b2da38e73f8b271fb6441ba944fc069441293797\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-07-26T15:46:07-04:00\",\"message\":\"Adding permissions to release process\\n\",\"insertions\":1,\"deletions\":1,\"files\":{\".github/workflows/python-release.yml\":{\"insertions\":27,\"deletions\":1,\"lines\":60}}},{\"commit\":\"4f577ff76fa025f30fde64d31c6f87e8f7f058cd\",\"parents\":[\"8a6ee39d1d1f8d92a175aa760701212b8cfc5f15\"],\"tree\":\"da930f1bca0dfcd61b7abaf6b0341329a2fea90a\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-07-26T15:34:26-04:00\",\"message\":\"Fixing syntax issue in build\\n\",\"insertions\":1,\"deletions\":1,\"files\":{\".github/workflows/python-release.yml\":{\"insertions\":165,\"deletions\":167,\"lines\":60}}},{\"commit\":\"8a6ee39d1d1f8d92a175aa760701212b8cfc5f15\",\"parents\":[\"dfa1731589d2f60138b7745891b26b74c28f3b34\"],\"tree\":\"a8c7d2eb43534109a7d4bd1b676c490b7a70a37f\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-07-26T15:29:15-04:00\",\"message\":\"Adding version automation\\n\",\"insertions\":2,\"deletions\":2,\"files\":{\".github/workflows/python-release.yml\":{\"insertions\":271,\"deletions\":268,\"lines\":60},\"Makefile\":{\"insertions\":155,\"deletions\":94,\"lines\":58},\"bump_version.py\":{\"insertions\":2095,\"deletions\":0,\"lines\":59},\"poetry.lock\":{\"insertions\":936,\"deletions\":82,\"lines\":1272},\"pyproject.toml\":{\"insertions\":334,\"deletions\":295,\"lines\":37},\"src/git_inquisitor/__init__.py\":{\"insertions\":27,\"deletions\":22,\"lines\":1}}},{\"commit\":\"dfa1731589d2f60138b7745891b26b74c28f3b34\",\"parents\":[\"da28771f2ace249d90acef800e214d89b967a487\"],\"tree\":\"f19e72f3b26e2066cdef5b4a520cf5da7e41c007\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-07-26T14:24:10-04:00\",\"message\":\"Testing release build\\n\",\"insertions\":4,\"deletions\":0,\"files\":{\".github/workflows/python-release.yml\":{\"insertions\":106,\"deletions\":0,\"lines\":60}}},{\"commit\":\"da28771f2ace249d90acef800e214d89b967a487\",\"parents\":[\"318445774c4d19f69b1f89ab715ade38afb128c4\"],\"tree\":\"914c34fe53a5ee11c2b256865280c46882772075\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-07-26T14:16:15-04:00\",\"message\":\"Updating detached ref string\\n\",\"insertions\":1,\"deletions\":1,\"files\":{\"src/git_inquisitor/collector.py\":{\"insertions\":59,\"deletions\":43,\"lines\":197}}},{\"commit\":\"318445774c4d19f69b1f89ab715ade38afb128c4\",\"parents\":[\"b2c6103c83aba9e76938a93117b39a832fd91eb0\"],\"tree\":\"0ea76e53d89f6afafb579caddb75368876014040\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-07-26T14:13:43-04:00\",\"message\":\"Add support for detached head\\n\",\"insertions\":7,\"deletions\":2,\"files\":{\"src/git_inquisitor/collector.py\":{\"insertions\":233,\"deletions\":118,\"lines\":197}}},{\"commit\":\"b2c6103c83aba9e76938a93117b39a832fd91eb0\",\"parents\":[\"436751ec48e792b41cf772f5ada0a6589d93ae3c\"],\"tree\":\"315e165f20a976eea4ed76604df883468c89f32f\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-07-25T12:08:03-04:00\",\"message\":\"Support for detached head state\\n\",\"insertions\":16,\"deletions\":11,\"files\":{\"src/git_inquisitor/collector.py\":{\"insertions\":494,\"deletions\":394,\"lines\":192}}},{\"commit\":\"436751ec48e792b41cf772f5ada0a6589d93ae3c\",\"parents\":[\"3a92e057ca72166f1f795d578341626186a5230b\"],\"tree\":\"001b9632cd19eef7e084d584ca73b7bd85b34d7a\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-07-21T13:51:59-04:00\",\"message\":\"Testing release workflow\\n\",\"insertions\":0,\"deletions\":17,\"files\":{\".github/workflows/python-app.yml\":{\"insertions\":0,\"deletions\":454,\"lines\":56},\".github/workflows/python-release.yml\":{\"insertions\":31,\"deletions\":65,\"lines\":56}}},{\"commit\":\"3a92e057ca72166f1f795d578341626186a5230b\",\"parents\":[\"0b3ecaa6741ccf0f84be483bc57e6a0701cd76a7\"],\"tree\":\"5aa7a3cd49bd1e5632ca608280a2fe98aa51405d\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-07-21T13:41:48-04:00\",\"message\":\"Adding release workflow\\n\",\"insertions\":1,\"deletions\":23,\"files\":{\".github/workflows/python-app.yml\":{\"insertions\":35,\"deletions\":620,\"lines\":73}}},{\"commit\":\"0b3ecaa6741ccf0f84be483bc57e6a0701cd76a7\",\"parents\":[\"397a2266a90f829a8720bac191f2fd02c00ac47f\"],\"tree\":\"b8ec7f50fb1e17b76423844262e7fe07a8fa3e52\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-07-21T13:40:19-04:00\",\"message\":\"Adding release workflow\\n\",\"insertions\":59,\"deletions\":0,\"files\":{\".github/workflows/python-release.yml\":{\"insertions\":1490,\"deletions\":0,\"lines\":59}}},{\"commit\":\"397a2266a90f829a8720bac191f2fd02c00ac47f\",\"parents\":[\"de49cfab9464a1f6d8b1db2a26aa26d6690973cd\"],\"tree\":\"988c9f564e66325e36397c317663f1f39e2738da\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-07-21T13:29:06-04:00\",\"message\":\"mplementing release workflow\\n\",\"insertions\":43,\"deletions\":4,\"files\":{\".github/workflows/python-app.yml\":{\"insertions\":937,\"deletions\":102,\"lines\":95},\"CODE_OF_CONDUCT.md\":{\"insertions\":3115,\"deletions\":0,\"lines\":70},\"CONTRIBUTING.md\":{\"insertions\":9735,\"deletions\":0,\"lines\":172}}},{\"commit\":\"de49cfab9464a1f6d8b1db2a26aa26d6690973cd\",\"parents\":[\"e4ee4c0b7e8d2b17b7d236bce39657c7765dcce3\"],\"tree\":\"8c5678c515d15fd9b3f159ecd7a63aa407506c85\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-07-21T12:17:34-04:00\",\"message\":\"Updating actions build to include PyPi publishing\\n\",\"insertions\":10,\"deletions\":0,\"files\":{\".github/workflows/python-app.yml\":{\"insertions\":375,\"deletions\":0,\"lines\":56}}},{\"commit\":\"e4ee4c0b7e8d2b17b7d236bce39657c7765dcce3\",\"parents\":[\"da1eb2929c0ee2c22b26b009a53fb5c49d198fad\"],\"tree\":\"f901d3c601884d05f4102fa80d6f67fc15f14336\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-07-21T11:37:29-04:00\",\"message\":\"Enabling Python matrix build\\n\",\"insertions\":5,\"deletions\":2,\"files\":{\".github/workflows/python-app.yml\":{\"insertions\":196,\"deletions\":66,\"lines\":46}}},{\"commit\":\"da1eb2929c0ee2c22b26b009a53fb5c49d198fad\",\"parents\":[\"fe5082b6d338d674a5e68bbd6a187ffe40aa07d8\"],\"tree\":\"7142a3327aa2506cc2ef3207025ee3c52c05c6cb\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-07-21T11:32:48-04:00\",\"message\":\"Fixing typo in README\\n\",\"insertions\":1,\"deletions\":1,\"files\":{\"README.md\":{\"insertions\":28,\"deletions\":27,\"lines\":67}}},{\"commit\":\"fe5082b6d338d674a5e68bbd6a187ffe40aa07d8\",\"parents\":[\"3907368e988518cef95f8eb548914bdc1cec210e\"],\"tree\":\"d55196b806433b7204a017e60676ab55794976fc\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-07-21T11:29:04-04:00\",\"message\":\"Setting different clone depth\\n\",\"insertions\":2,\"deletions\":0,\"files\":{\".github/workflows/python-app.yml\":{\"insertions\":39,\"deletions\":0,\"lines\":43}}},{\"commit\":\"3907368e988518cef95f8eb548914bdc1cec210e\",\"parents\":[\"017970800aecf3438680cdd9fb6a6e3c44930149\"],\"tree\":\"dee24a3f4894b3aa2b3d9ce305eea6f122cd5a16\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-07-21T10:48:02-04:00\",\"message\":\"Updating deps and README\\n\",\"insertions\":4,\"deletions\":1,\"files\":{\"Makefile\":{\"insertions\":194,\"deletions\":15,\"lines\":55},\"README.md\":{\"insertions\":1231,\"deletions\":249,\"lines\":67},\"poetry.lock\":{\"insertions\":56908,\"deletions\":51262,\"lines\":1250},\"pyproject.toml\":{\"insertions\":18,\"deletions\":0,\"lines\":37}}},{\"commit\":\"017970800aecf3438680cdd9fb6a6e3c44930149\",\"parents\":[\"98aeccec782140f7a4dbd899ecca5a9bb41b4925\"],\"tree\":\"3e6d28584782faa3676bfde400bded3419d24eb2\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-04-26T22:54:21-04:00\",\"message\":\"Configuring tests\\n\",\"insertions\":0,\"deletions\":7,\"files\":{\".github/workflows/python-app.yml\":{\"insertions\":0,\"deletions\":126,\"lines\":41}}},{\"commit\":\"98aeccec782140f7a4dbd899ecca5a9bb41b4925\",\"parents\":[\"88e34705b68ccc780b707ea0cc19de1e1031d8b4\"],\"tree\":\"0abf7e37341aeeaabb75a01708711d3572ef0eaa\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-04-26T22:52:37-04:00\",\"message\":\"Configuring tests\\n\",\"insertions\":8,\"deletions\":1,\"files\":{\".github/workflows/python-app.yml\":{\"insertions\":164,\"deletions\":38,\"lines\":48},\"pyproject.toml\":{\"insertions\":22,\"deletions\":22,\"lines\":36}}},{\"commit\":\"88e34705b68ccc780b707ea0cc19de1e1031d8b4\",\"parents\":[\"01cb173dedd978abd3644cbe879ea93cd6bf64e1\"],\"tree\":\"c01279929f8fad3e5ad2f274679c8b28c1a03361\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-04-26T22:42:20-04:00\",\"message\":\"Configuring tests\\n\",\"insertions\":0,\"deletions\":8,\"files\":{\".github/workflows/python-app.yml\":{\"insertions\":0,\"deletions\":208,\"lines\":41}}},{\"commit\":\"01cb173dedd978abd3644cbe879ea93cd6bf64e1\",\"parents\":[\"d53308cdbb6330165798fe4345a2cc0146b79f30\"],\"tree\":\"f00799242b6fd21cee1327a61cec02d0e390f48e\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-04-26T22:39:27-04:00\",\"message\":\"Configuring tests\\n\",\"insertions\":1,\"deletions\":1,\"files\":{\".github/workflows/python-app.yml\":{\"insertions\":38,\"deletions\":33,\"lines\":49}}},{\"commit\":\"d53308cdbb6330165798fe4345a2cc0146b79f30\",\"parents\":[\"58033ec258e3bb9ee624090905363153b351ecce\"],\"tree\":\"c4971356545b3255a86cc147aca87109ba55de65\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-04-26T22:38:40-04:00\",\"message\":\"Configuring tests\\n\",\"insertions\":32,\"deletions\":22,\"files\":{\".github/workflows/python-app.yml\":{\"insertions\":1013,\"deletions\":774,\"lines\":49}}},{\"commit\":\"58033ec258e3bb9ee624090905363153b351ecce\",\"parents\":[\"9c31fc06df3f4ee06cd1c96593e29d7f78b44ecb\"],\"tree\":\"d398efc99662ffe67dc6396bb810196b8f26e758\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-04-26T22:31:27-04:00\",\"message\":\"Configuring tests\\n\",\"insertions\":1,\"deletions\":1,\"files\":{\"Makefile\":{\"insertions\":15,\"deletions\":25,\"lines\":52},\"src/conftest.py\":{\"insertions\":0,\"deletions\":0,\"lines\":0}}},{\"commit\":\"9c31fc06df3f4ee06cd1c96593e29d7f78b44ecb\",\"parents\":[\"94b227d1d46bbf921cf8b48a8188b52e8e146e7a\"],\"tree\":\"541306740e370b7267e94073a970cd73a22baeb3\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-04-26T22:29:23-04:00\",\"message\":\"Configuring tests\\n\",\"insertions\":0,\"deletions\":0,\"files\":{\"src/conftest.py\":{\"insertions\":0,\"deletions\":0,\"lines\":0}}},{\"commit\":\"94b227d1d46bbf921cf8b48a8188b52e8e146e7a\",\"parents\":[\"473d281ba0e5d8a42d577b999f141898b05439be\"],\"tree\":\"c828238d17736e9f01dfbe29c7a874e6f5354a03\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-04-26T22:11:27-04:00\",\"message\":\"Configuring tests\\n\",\"insertions\":4,\"deletions\":0,\"files\":{\"pyproject.toml\":{\"insertions\":70,\"deletions\":0,\"lines\":36}}},{\"commit\":\"473d281ba0e5d8a42d577b999f141898b05439be\",\"parents\":[\"b361619ef9b04f6edc9a56e069458362af865a57\"],\"tree\":\"743bd8ad72285ec17dda801bf1dc52d7210dc47a\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-04-26T21:56:41-04:00\",\"message\":\"Fixing tests\\n\",\"insertions\":2,\"deletions\":2,\"files\":{\"Makefile\":{\"insertions\":127,\"deletions\":145,\"lines\":52},\"tests/test_collector.py\":{\"insertions\":163,\"deletions\":126,\"lines\":109}}},{\"commit\":\"b361619ef9b04f6edc9a56e069458362af865a57\",\"parents\":[\"0479184371f324fbdd5481bb050b3cc12cf8fff4\"],\"tree\":\"da318f0ceb7f8b99e04e9cb584b457c0ed21d293\",\"contributor\":\"GitHub (noreply@github.com)\",\"date\":\"2024-04-26T21:48:48-04:00\",\"message\":\"Create python-app.yml\",\"insertions\":39,\"deletions\":0,\"files\":{\".github/workflows/python-app.yml\":{\"insertions\":1135,\"deletions\":0,\"lines\":39}}},{\"commit\":\"0479184371f324fbdd5481bb050b3cc12cf8fff4\",\"parents\":[\"2459c5e6bdc7dc9e7b4f3946f963459896b3f151\",\"7f55e43090efcbded180c8e896a7834c6b8e7247\"],\"tree\":\"15cd756c2922801aa89ade698a8455c8282e17c5\",\"contributor\":\"GitHub (noreply@github.com)\",\"date\":\"2024-04-24T18:14:09-04:00\",\"message\":\"Merge pull request #1 from jpwhite3/dependabot/pip/pillow-10.3.0\\n\\nBump pillow from 10.2.0 to 10.3.0\",\"insertions\":71,\"deletions\":70,\"files\":{\"poetry.lock\":{\"insertions\":10527,\"deletions\":10366,\"lines\":1163}}},{\"commit\":\"7f55e43090efcbded180c8e896a7834c6b8e7247\",\"parents\":[\"2459c5e6bdc7dc9e7b4f3946f963459896b3f151\"],\"tree\":\"15cd756c2922801aa89ade698a8455c8282e17c5\",\"contributor\":\"GitHub (noreply@github.com)\",\"date\":\"2024-04-03T16:33:27Z\",\"message\":\"Bump pillow from 10.2.0 to 10.3.0\\n\\nBumps [pillow](https://github.com/python-pillow/Pillow) from 10.2.0 to 10.3.0.\\n- [Release notes](https://github.com/python-pillow/Pillow/releases)\\n- [Changelog](https://github.com/python-pillow/Pillow/blob/main/CHANGES.rst)\\n- [Commits](https://github.com/python-pillow/Pillow/compare/10.2.0...10.3.0)\\n\\n---\\nupdated-dependencies:\\n- dependency-name: pillow\\n  dependency-type: indirect\\n...\\n\\nSigned-off-by: dependabot[bot] \\u003csupport@github.com\\u003e\",\"insertions\":71,\"deletions\":70,\"files\":{\"poetry.lock\":{\"insertions\":10527,\"deletions\":10366,\"lines\":1163}}},{\"commit\":\"2459c5e6bdc7dc9e7b4f3946f963459896b3f151\",\"parents\":[\"25e6a639d19fcbc23470d8a4832c8a2097830a94\"],\"tree\":\"b91b5aece20027b0bf8d566db96779dd20fa0eb0\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-02-09T17:03:59-05:00\",\"message\":\"Refactoring release process\\n\",\"insertions\":4,\"deletions\":3,\"files\":{\"Makefile\":{\"insertions\":185,\"deletions\":118,\"lines\":52},\"README.md\":{\"insertions\":516,\"deletions\":0,\"lines\":28},\"pyproject.toml\":{\"insertions\":54,\"deletions\":30,\"lines\":32},\"src/git_inquisitor/__init__.py\":{\"insertions\":0,\"deletions\":0,\"lines\":1},\"src/git_inquisitor/__main__.py\":{\"insertions\":0,\"deletions\":0,\"lines\":42},\"src/git_inquisitor/chart.py\":{\"insertions\":0,\"deletions\":0,\"lines\":129},\"src/git_inquisitor/collector.py\":{\"insertions\":0,\"deletions\":0,\"lines\":187},\"src/git_inquisitor/report.py\":{\"insertions\":0,\"deletions\":0,\"lines\":66},\"src/git_inquisitor/templates/html.template\":{\"insertions\":0,\"deletions\":0,\"lines\":273},\"tests/test_chart.py\":{\"insertions\":46,\"deletions\":42,\"lines\":34},\"tests/test_collector.py\":{\"insertions\":228,\"deletions\":213,\"lines\":108},\"tests/test_report.py\":{\"insertions\":168,\"deletions\":156,\"lines\":43}}},{\"commit\":\"25e6a639d19fcbc23470d8a4832c8a2097830a94\",\"parents\":[\"0c814772a80907ee8cfbafab45076893e69dc38c\"],\"tree\":\"e16856fb4c992629f5260016c300866513c2e0fc\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-02-08T17:45:12-05:00\",\"message\":\"Adding more tests\\n\",\"insertions\":6,\"deletions\":3,\"files\":{\"tests/test_collector.py\":{\"insertions\":268,\"deletions\":198,\"lines\":108}}},{\"commit\":\"0c814772a80907ee8cfbafab45076893e69dc38c\",\"parents\":[\"a433e0a6fc19c301728e25e510d94ef5743677c6\"],\"tree\":\"8fae777648c140acc26724a043446038882cccf3\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-02-08T17:39:32-05:00\",\"message\":\"Adding tests\\n\",\"insertions\":160,\"deletions\":0,\"files\":{\".gitignore\":{\"insertions\":3077,\"deletions\":0,\"lines\":160},\"Makefile\":{\"insertions\":1410,\"deletions\":0,\"lines\":51},\"README.md\":{\"insertions\":0,\"deletions\":0,\"lines\":0},\"inquisitor/chart.py\":{\"insertions\":0,\"deletions\":39,\"lines\":129},\"poetry.lock\":{\"insertions\":556,\"deletions\":82,\"lines\":1162},\"pyproject.toml\":{\"insertions\":96,\"deletions\":24,\"lines\":32},\"tests/__init__.py\":{\"insertions\":0,\"deletions\":0,\"lines\":0},\"tests/test_chart.py\":{\"insertions\":901,\"deletions\":0,\"lines\":34},\"tests/test_collector.py\":{\"insertions\":3943,\"deletions\":0,\"lines\":105},\"tests/test_report.py\":{\"insertions\":1105,\"deletions\":0,\"lines\":43}}},{\"commit\":\"a433e0a6fc19c301728e25e510d94ef5743677c6\",\"parents\":[\"dfb7ff41ed04a962bd967cef0305d9a7c26809cf\"],\"tree\":\"c76319fbaf5ebacd7b145eead2ff6d5ca3d4add6\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-02-08T16:21:13-05:00\",\"message\":\"Switch build system to Poetry\\n\",\"insertions\":0,\"deletions\":16,\"files\":{\"Makefile\":{\"insertions\":0,\"deletions\":0,\"lines\":0},\"Pipfile\":{\"insertions\":0,\"deletions\":240,\"lines\":0},\"Pipfile.lock\":{\"insertions\":0,\"deletions\":62862,\"lines\":0},\"inquisitor/__main__.py\":{\"insertions\":24,\"deletions\":39,\"lines\":42},\"poetry.lock\":{\"insertions\":94610,\"deletions\":0,\"lines\":1148},\"pyproject.toml\":{\"insertions\":631,\"deletions\":0,\"lines\":27}}},{\"commit\":\"dfb7ff41ed04a962bd967cef0305d9a7c26809cf\",\"parents\":[\"2e680e934e0c5f6d1f29a3c4fd5b4dbbe556e9e3\"],\"tree\":\"541542fef872e90c2c7e71bd65f3b1cf324d7bb2\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-02-07T18:07:10-05:00\",\"message\":\"Enabling CLI\\n\",\"insertions\":2,\"deletions\":2,\"files\":{\"Pipfile\":{\"insertions\":26,\"deletions\":29,\"lines\":16},\"Pipfile.lock\":{\"insertions\":14018,\"deletions\":13673,\"lines\":922},\"__pycache__/inquizitor.cpython-312.pyc\":{\"insertions\":0,\"deletions\":0,\"lines\":0},\"example.ipynb\":{\"insertions\":0,\"deletions\":320330,\"lines\":0},\"git_statistics.html\":{\"insertions\":0,\"deletions\":1577619,\"lines\":0},\"git_statistics.json\":{\"insertions\":0,\"deletions\":783569,\"lines\":0},\"inquisitor/__init__.py\":{\"insertions\":22,\"deletions\":0,\"lines\":1},\"inquisitor/__main__.py\":{\"insertions\":1087,\"deletions\":424,\"lines\":42},\"inquisitor/__pycache__/__init__.cpython-311.pyc\":{\"insertions\":0,\"deletions\":0,\"lines\":0},\"inquisitor/collector.py\":{\"insertions\":2410,\"deletions\":1333,\"lines\":187},\"inquisitor/report.py\":{\"insertions\":236,\"deletions\":244,\"lines\":66},\"inquisitor/runner.py\":{\"insertions\":0,\"deletions\":355,\"lines\":0},\"inquisitor/templates/html.template\":{\"insertions\":723,\"deletions\":663,\"lines\":273}}},{\"commit\":\"2e680e934e0c5f6d1f29a3c4fd5b4dbbe556e9e3\",\"parents\":null,\"tree\":\"e232daf405620d3b91819ddacfc3e5497d9fc91b\",\"contributor\":\"JP White (jpwhite3@gmail.com)\",\"date\":\"2024-02-02T20:03:05-05:00\",\"message\":\"Initial commit\\n\",\"insertions\":43105,\"deletions\":0,\"files\":{\"Pipfile\":{\"insertions\":16,\"deletions\":0,\"lines\":16},\"Pipfile.lock\":{\"insertions\":914,\"deletions\":0,\"lines\":914},\"example.ipynb\":{\"insertions\":5000,\"deletions\":0,\"lines\":5000},\"git_statistics.html\":{\"insertions\":14663,\"deletions\":0,\"lines\":14663},\"git_statistics.json\":{\"insertions\":21848,\"deletions\":0,\"lines\":21848},\"inquisitor/__init__.py\":{\"insertions\":0,\"deletions\":0,\"lines\":0},\"inquisitor/__main__.py\":{\"insertions\":16,\"deletions\":0,\"lines\":16},\"inquisitor/chart.py\":{\"insertions\":130,\"deletions\":0,\"lines\":130},\"inquisitor/collector.py\":{\"insertions\":156,\"deletions\":0,\"lines\":156},\"inquisitor/report.py\":{\"insertions\":66,\"deletions\":0,\"lines\":66},\"inquisitor/runner.py\":{\"insertions\":23,\"deletions\":0,\"lines\":23},\"inquisitor/templates/html.template\":{\"insertions\":273,\"deletions\":0,\"lines\":273}}}]";
+                
+                
+                const commitsByDate = {};
+                const parsedHistoryData = JSON.parse(historyData);
+                parsedHistoryData.forEach(item => {
+                    const date = item.date.split('T')[0]; 
+                    commitsByDate[date] = (commitsByDate[date] || 0) + 1;
+                });
+                
+                
+                const insertionsByDate = {};
+                const deletionsByDate = {};
+                parsedHistoryData.forEach(item => {
+                    const date = item.date.split('T')[0];
+                    insertionsByDate[date] = (insertionsByDate[date] || 0) + item.insertions;
+                    deletionsByDate[date] = (deletionsByDate[date] || 0) + item.deletions;
+                });
+                
+                
+                const allDates = [...new Set([
+                    ...Object.keys(commitsByDate),
+                    ...Object.keys(insertionsByDate),
+                    ...Object.keys(deletionsByDate)
+                ])].sort();
+                
+                
+                new Chart(document.getElementById('commitHistoryChart'), {
+                    type: 'line',
+                    data: {
+                        labels: allDates,
+                        datasets: [{
+                            label: 'Commits',
+                            data: allDates.map(date => commitsByDate[date] || 0),
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            tension: 0.1,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Commit Activity Over Time'
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Date'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Number of Commits'
+                                },
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+                
+                
+                new Chart(document.getElementById('changeHistoryChart'), {
+                    type: 'line',
+                    data: {
+                        labels: allDates,
+                        datasets: [
+                            {
+                                label: 'Insertions',
+                                data: allDates.map(date => insertionsByDate[date] || 0),
+                                borderColor: 'rgba(75, 192, 75, 1)',
+                                backgroundColor: 'rgba(75, 192, 75, 0.2)',
+                                tension: 0.1
+                            },
+                            {
+                                label: 'Deletions',
+                                data: allDates.map(date => deletionsByDate[date] || 0),
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                tension: 0.1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Line Changes Over Time'
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Date'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Number of Lines'
+                                },
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

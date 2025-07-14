@@ -70,6 +70,9 @@ version: ## set version based on date
 build: clean version ## build binary
 	go build -o bin/git-inquisitor ./cmd/git-inquisitor
 
+run: build ## run binary
+	./bin/git-inquisitor
+
 lint: ## lint Go code with golangci-lint
 	golangci-lint run ./...
 

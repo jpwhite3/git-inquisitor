@@ -9,6 +9,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Git-Inquisitor | Report: {{ $headCommitShort }}</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <!-- Add Chart.js library -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
         <style type="text/css">
             .table-sm tbody tr td, .table-sm thead tr th {
                 font-size: 85%;
@@ -114,17 +116,9 @@
                             Contributions by Author
                         </div>
                         <div class="card-body">
-                            {{ if $chartData.CommitsByAuthorChart }}
-                            <img src="data:image/png;base64,{{ $chartData.CommitsByAuthorChart }}" class="card-img-top img-fluid" alt="Commits by Author" />
-                            {{ else }}
-                            <p class="text-center text-muted">Chart data unavailable.</p>
-                            {{ end }}
+                            <canvas id="commitsChart" width="400" height="300"></canvas>
                             <hr>
-                            {{ if $chartData.ChangesByAuthorChart }}
-                            <img src="data:image/png;base64,{{ $chartData.ChangesByAuthorChart }}" class="card-img-top img-fluid" alt="Line Changes by Author" />
-                            {{ else }}
-                            <p class="text-center text-muted">Chart data unavailable.</p>
-                            {{ end }}
+                            <canvas id="changesChart" width="400" height="300"></canvas>
                         </div>
                     </div>
                 </div>
@@ -134,17 +128,9 @@
                             Change Frequency
                         </div>
                         <div class="card-body">
-                             {{ if $chartData.CommitHistoryChart }}
-                            <img src="data:image/png;base64,{{ $chartData.CommitHistoryChart }}" class="card-img-top img-fluid" alt="Commits over time" />
-                             {{ else }}
-                            <p class="text-center text-muted">Chart data unavailable.</p>
-                            {{ end }}
+                            <canvas id="commitHistoryChart" width="600" height="300"></canvas>
                             <hr class="my-5">
-                             {{ if $chartData.ChangeHistoryChart }}
-                            <img src="data:image/png;base64,{{ $chartData.ChangeHistoryChart }}" class="card-img-top img-fluid" alt="Line changes over time" />
-                             {{ else }}
-                            <p class="text-center text-muted">Chart data unavailable.</p>
-                            {{ end }}
+                            <canvas id="changeHistoryChart" width="600" height="300"></canvas>
                         </div>
                     </div>
                 </div>
@@ -281,6 +267,204 @@
         <script type="text/javascript">
             const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
             const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+            
+            // Chart.js implementation
+            document.addEventListener('DOMContentLoaded', function() {
+                // Chart data
+                const contributorData = {
+                    {{ range $name, $attrs := $data.Contributors }}
+                    "{{ $name }}": {
+                        "commits": {{ $attrs.CommitCount }},
+                        "insertions": {{ $attrs.Insertions }},
+                        "deletions": {{ $attrs.Deletions }}
+                    },
+                    {{ end }}
+                };
+                
+                // Extract data for charts
+                const contributorNames = Object.keys(contributorData);
+                const commitCounts = contributorNames.map(name => contributorData[name].commits);
+                const insertionCounts = contributorNames.map(name => contributorData[name].insertions);
+                const deletionCounts = contributorNames.map(name => contributorData[name].deletions);
+                
+                // Generate random colors for charts
+                function generateColors(count) {
+                    const colors = [];
+                    for (let i = 0; i < count; i++) {
+                        const r = Math.floor(Math.random() * 200) + 55;
+                        const g = Math.floor(Math.random() * 200) + 55;
+                        const b = Math.floor(Math.random() * 200) + 55;
+                        colors.push(`rgba(${r}, ${g}, ${b}, 0.7)`);
+                    }
+                    return colors;
+                }
+                
+                const backgroundColors = generateColors(contributorNames.length);
+                
+                // Commits by Author Chart
+                new Chart(document.getElementById('commitsChart'), {
+                    type: 'pie',
+                    data: {
+                        labels: contributorNames,
+                        datasets: [{
+                            data: commitCounts,
+                            backgroundColor: backgroundColors,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Commits by Author'
+                            }
+                        }
+                    }
+                });
+                
+                // Line Changes by Author Chart
+                new Chart(document.getElementById('changesChart'), {
+                    type: 'pie',
+                    data: {
+                        labels: contributorNames,
+                        datasets: [{
+                            data: contributorNames.map(name => contributorData[name].insertions + contributorData[name].deletions),
+                            backgroundColor: backgroundColors,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Line Changes by Author'
+                            }
+                        }
+                    }
+                });
+                
+                // Process history data for time-based charts
+                const historyData = {{ $data.History | json }};
+                
+                // Group commits by date for commit history chart
+                const commitsByDate = {};
+                historyData.forEach(item => {
+                    const date = item.date.split('T')[0]; // Extract date part only
+                    commitsByDate[date] = (commitsByDate[date] || 0) + 1;
+                });
+                
+                // Group line changes by date
+                const insertionsByDate = {};
+                const deletionsByDate = {};
+                historyData.forEach(item => {
+                    const date = item.date.split('T')[0];
+                    insertionsByDate[date] = (insertionsByDate[date] || 0) + item.insertions;
+                    deletionsByDate[date] = (deletionsByDate[date] || 0) + item.deletions;
+                });
+                
+                // Sort dates for charts
+                const allDates = [...new Set([
+                    ...Object.keys(commitsByDate),
+                    ...Object.keys(insertionsByDate),
+                    ...Object.keys(deletionsByDate)
+                ])].sort();
+                
+                // Commit History Chart
+                new Chart(document.getElementById('commitHistoryChart'), {
+                    type: 'line',
+                    data: {
+                        labels: allDates,
+                        datasets: [{
+                            label: 'Commits',
+                            data: allDates.map(date => commitsByDate[date] || 0),
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            tension: 0.1,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Commit Activity Over Time'
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Date'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Number of Commits'
+                                },
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+                
+                // Line Changes Over Time Chart
+                new Chart(document.getElementById('changeHistoryChart'), {
+                    type: 'line',
+                    data: {
+                        labels: allDates,
+                        datasets: [
+                            {
+                                label: 'Insertions',
+                                data: allDates.map(date => insertionsByDate[date] || 0),
+                                borderColor: 'rgba(75, 192, 75, 1)',
+                                backgroundColor: 'rgba(75, 192, 75, 0.2)',
+                                tension: 0.1
+                            },
+                            {
+                                label: 'Deletions',
+                                data: allDates.map(date => deletionsByDate[date] || 0),
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                tension: 0.1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Line Changes Over Time'
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Date'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Number of Lines'
+                                },
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            });
         </script>
     </body>
 </html>
