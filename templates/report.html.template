@@ -1,13 +1,14 @@
-{% set head_commit = data.metadata.repo.commit.sha %}
-{% set head_commit_short = data.metadata.repo.commit.sha|truncate(8, False, '') %}
+{{ $data := .Data }}
+{{ $chartData := .ChartData }}
+{{ $headCommit := $data.Metadata.Repo.Commit.SHA }}
+{{ $headCommitShort := ShortSha $headCommit }}
 <!doctype html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Git-Inquisitor | Report: {{ head_commit_short }}</title>
+        <title>Git-Inquisitor | Report: {{ $headCommitShort }}</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"> -->
         <style type="text/css">
             .table-sm tbody tr td, .table-sm thead tr th {
                 font-size: 85%;
@@ -33,25 +34,25 @@
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="#"><i class="bi bi-git"></i></a>
+                <a class="navbar-brand" href="#"><!-- <i class="bi bi-git"></i> --> Git Logo</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link" href="#top">Git-Inquisitor v{{ data.metadata.collector.inquisitor_version }}</a> 
+                            <a class="nav-link" href="#top">Git-Inquisitor v{{ $data.Metadata.Collector.InquisitorVersion }}</a> 
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
         <div class="container my-5">
-            <h1 class="display-4">Inquisitor Report: {{ head_commit_short }}</h1>
+            <h1 class="display-4">Inquisitor Report: {{ $headCommitShort }}</h1>
             <hr>
             <div class="row">
                 <div class="col-lg-6 col-sm-12 my-3">
-                    <div class="card h-100 border-dark" id="">
+                    <div class="card h-100 border-dark" id="repo-info">
                         <div class="card-header text-bg-dark">
                             Repository Information
                         </div>
@@ -59,27 +60,22 @@
                             <div class="table-responsive overflow-y-scroll">
                                 <table class="table table-sm">
                                     <tbody class="">
-                                        {% for key, val in data.metadata.repo.items() %}
+                                        <tr><th>URL</th><td>{{ $data.Metadata.Repo.URL }}</td></tr>
+                                        <tr><th>Branch</th><td>{{ $data.Metadata.Repo.Branch }}</td></tr>
                                         <tr>
-                                            <th scope="col">{{ key|capitalize|replace("_"," ") }}</th>
-                                            {% if key == 'commit' %}
-                                                <td>
-                                                    <table class="table table-sm">
-                                                        <tbody>
-                                                            {% for k, v in val.items() %}
-                                                            <tr>
-                                                                <th scope="col">{{ k|capitalize|replace("_"," ") }}</th>
-                                                                <td>{{ v|string|truncate(60) }}</td>
-                                                            </tr>
-                                                            {% endfor %}
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            {% else %}
-                                                <td>{{ val }}</td>
-                                            {% endif %}
+                                            <th scope="col" style="vertical-align: top;">Commit</th>
+                                            <td>
+                                                <table class="table table-sm table-borderless">
+                                                    <tbody>
+                                                        <tr><th scope="row" class="px-0">SHA</th><td class="px-0">{{ $data.Metadata.Repo.Commit.SHA }}</td></tr>
+                                                        <tr><th scope="row" class="px-0">Date</th><td class="px-0">{{ FormatDateTime $data.Metadata.Repo.Commit.Date }}</td></tr>
+                                                        <tr><th scope="row" class="px-0">Tree</th><td class="px-0">{{ $data.Metadata.Repo.Commit.Tree }}</td></tr>
+                                                        <tr><th scope="row" class="px-0">Contributor</th><td class="px-0">{{ $data.Metadata.Repo.Commit.Contributor }}</td></tr>
+                                                        <tr><th scope="row" class="px-0">Message</th><td class="px-0">{{ Truncate $data.Metadata.Repo.Commit.Message 60 false "..." }}</td></tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
                                         </tr>
-                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
@@ -87,7 +83,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-sm-12 my-3">
-                    <div class="card h-100 border-dark" id="">
+                    <div class="card h-100 border-dark" id="collector-info">
                         <div class="card-header text-bg-dark">
                             Collector Information
                         </div>
@@ -95,12 +91,13 @@
                             <div class="table-responsive overflow-y-scroll" style="max-height: 300px;">
                                 <table class="table table-sm">
                                     <tbody class="">
-                                        {% for key, val in data.metadata.collector.items() %}
-                                        <tr>
-                                            <th scope="col">{{ key|capitalize|replace("_"," ") }}</th>
-                                            <td>{{ val }}</td>
-                                        </tr>
-                                        {% endfor %}
+                                        <tr><th>Inquisitor Version</th><td>{{ $data.Metadata.Collector.InquisitorVersion }}</td></tr>
+                                        <tr><th>Date Collected</th><td>{{ FormatDateTime $data.Metadata.Collector.DateCollected }}</td></tr>
+                                        <tr><th>User</th><td>{{ $data.Metadata.Collector.User }}</td></tr>
+                                        <tr><th>Hostname</th><td>{{ $data.Metadata.Collector.Hostname }}</td></tr>
+                                        <tr><th>Platform</th><td>{{ $data.Metadata.Collector.Platform }}</td></tr>
+                                        <tr><th>Go Version</th><td>{{ $data.Metadata.Collector.GoVersion }}</td></tr>
+                                        <tr><th>Git Version</th><td>{{ $data.Metadata.Collector.GitVersion }}</td></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -117,9 +114,17 @@
                             Contributions by Author
                         </div>
                         <div class="card-body">
-                            <img src="data:image/png;base64,{{ chart_data.commits_by_author }}" class="card-img-top" alt="Commits over time by contributor" />
+                            {{ if $chartData.CommitsByAuthorChart }}
+                            <img src="data:image/png;base64,{{ $chartData.CommitsByAuthorChart }}" class="card-img-top img-fluid" alt="Commits by Author" />
+                            {{ else }}
+                            <p class="text-center text-muted">Chart data unavailable.</p>
+                            {{ end }}
                             <hr>
-                            <img src="data:image/png;base64,{{ chart_data.changes_by_author }}" class="card-img-top" alt="Commits over time by contributor" />
+                            {{ if $chartData.ChangesByAuthorChart }}
+                            <img src="data:image/png;base64,{{ $chartData.ChangesByAuthorChart }}" class="card-img-top img-fluid" alt="Line Changes by Author" />
+                            {{ else }}
+                            <p class="text-center text-muted">Chart data unavailable.</p>
+                            {{ end }}
                         </div>
                     </div>
                 </div>
@@ -129,44 +134,53 @@
                             Change Frequency
                         </div>
                         <div class="card-body">
-                            <img src="data:image/png;base64,{{ chart_data.commit_history_chart }}" class="card-img-top" alt="Commits over time" />
+                             {{ if $chartData.CommitHistoryChart }}
+                            <img src="data:image/png;base64,{{ $chartData.CommitHistoryChart }}" class="card-img-top img-fluid" alt="Commits over time" />
+                             {{ else }}
+                            <p class="text-center text-muted">Chart data unavailable.</p>
+                            {{ end }}
                             <hr class="my-5">
-                            <img src="data:image/png;base64,{{ chart_data.change_history_chart }}" class="card-img-top" alt="Line changes over time" />
+                             {{ if $chartData.ChangeHistoryChart }}
+                            <img src="data:image/png;base64,{{ $chartData.ChangeHistoryChart }}" class="card-img-top img-fluid" alt="Line changes over time" />
+                             {{ else }}
+                            <p class="text-center text-muted">Chart data unavailable.</p>
+                            {{ end }}
                         </div>
                     </div>
                 </div>
             </div>
             <h2 class="display-5 mt-3">Contributors</h2>
             <hr>
-            <div class="row row-cols-3 row-cols-md-5 g-4">
-                {% for contributor, attrs in data.contributors.items() %}
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4">
+                {{ range $contributorName, $attrs := $data.Contributors }}
                 <div class="col">
-                    <div class="card mb-3 border-dark">
+                    <div class="card mb-3 border-dark h-100">
                         <div class="card-header text-bg-dark">
                             <span class="text-primary me-2">
-                                <img width="16" height="16" class="img-fluid invert-color" alt="{{ contributor }}" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48IS0tIUZvbnQgQXdlc29tZSBGcmVlIDYuNS4xIGJ5IEBmb250YXdlc29tZSAtIGh0dHBzOi8vZm9udGF3ZXNvbWUuY29tIExpY2Vuc2UgLSBodHRwczovL2ZvbnRhd2Vzb21lLmNvbS9saWNlbnNlL2ZyZWUgQ29weXJpZ2h0IDIwMjQgRm9udGljb25zLCBJbmMuLS0+PHBhdGggZD0iTTI1NiAyODhBMTQ0IDE0NCAwIDEgMCAyNTYgMGExNDQgMTQ0IDAgMSAwIDAgMjg4em0tOTQuNyAzMkM3Mi4yIDMyMCAwIDM5Mi4yIDAgNDgxLjNjMCAxNyAxMy44IDMwLjcgMzAuNyAzMC43SDQ4MS4zYzE3IDAgMzAuNy0xMy44IDMwLjctMzAuN0M1MTIgMzkyLjIgNDM5LjggMzIwIDM1MC43IDMyMEgxNjEuM3oiLz48L3N2Zz4=">
+                                <img width="16" height="16" class="img-fluid invert-color" alt="{{ $contributorName }}" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48IS0tIUZvbnQgQXdlc29tZSBGcmVlIDYuNS4xIGJ5IEBmb250YXdlc29tZSAtIGh0dHBzOi8vZm9udGF3ZXNvbWUuY29tIExpY2Vuc2UgLSBodHRwczovL2ZvbnRhd2Vzb21lLmNvbS9saWNlbnNlL2ZyZWUgQ29weXJpZ2h0IDIwMjQgRm9udGljb25zLCBJbmMuLS0+PHBhdGggZD0iTTI1NiAyODhBMTQ0IDE0NCAwIDEgMCAyNTYgMGExNDQgMTQ0IDAgMSAwIDAgMjg4em0tOTQuNyAzMkM3Mi4yIDMyMCAwIDM5Mi4yIDAgNDgxLjNjMCAxNyAxMy44IDMwLjcgMzAuNyAzMC43SDQ4MS4zYzE3IDAgMzAuNy0xMy44IDMwLjctMzAuN0M1MTIgMzkyLjIgNDM5LjggMzIwIDM1MC43IDMyMEgxNjEuM3oiLz48L3N2Zz4=">
                             </span>
-                            {{ contributor }}
+                            {{ $contributorName }}
                         </div>
                         <div class="card-body px-1">
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item py-1">
-                                    <small class="">{{ attrs.commit_count|humanize_metric(precision=3) }} Commits</small>
+                                    <!-- HumanizeMetric removed, showing raw number -->
+                                    <small class="">{{ $attrs.CommitCount }} Commits</small>
                                 </li>
                                 <li class="list-group-item py-1">
-                                    <small class="text-success">+&nbsp;{{ attrs.insertions|humanize_metric(precision=3) }} Insertions</small>
+                                    <small class="text-success">+&nbsp;{{ $attrs.Insertions }} Insertions</small>
                                 </li>
                                 <li class="list-group-item py-1">
-                                    <small class="text-danger">-&nbsp;{{ attrs.deletions|humanize_metric(precision=3) }} Deletions</small>
+                                    <small class="text-danger">-&nbsp;{{ $attrs.Deletions }} Deletions</small>
                                 </li>
                                 <li class="list-group-item py-1">
-                                    <small class="text-primary">{{ attrs.active_lines|humanize_metric(precision=3) }} Active Lines</small>
+                                    <small class="text-primary">{{ $attrs.ActiveLines }} Active Lines</small>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                {% endfor %}
+                {{ end }}
             </div>
             <h2 class="display-5 mt-3">Files</h2>
             <hr>
@@ -174,7 +188,7 @@
                 <div class="col-lg-12 my-3">
                     <div class="card h-100 border-dark" id="file-stats">
                         <div class="card-header text-bg-dark">
-                            Tree {{ data.metadata.repo.commit.tree|truncate(8, False, '') }}
+                            Tree {{ ShortSha $data.Metadata.Repo.Commit.Tree }}
                         </div>
                         <div class="card-body">
                             <div class="table-responsive overflow-y-scroll">
@@ -190,25 +204,25 @@
                                         </tr>
                                     </thead>
                                     <tbody class="table-group-divider">
-                                        {% for file, attrs in data.files.items() %}
-                                            {% if attrs.total_lines > 0 %}
+                                        {{ range $file, $attrs := $data.Files }}
+                                            {{ if gt $attrs.TotalLines 0 }}
                                             <tr>
-                                                <td>{{ file }}</td>
-                                                <td>{{ attrs.date_introduced }}</td>
-                                                <td>{{ attrs.total_commits }}</td>
-                                                <td>{{ attrs.total_lines }}</td>
+                                                <td>{{ $file }}</td>
+                                                <td>{{ if not $attrs.DateIntroduced.IsZero }}{{ FormatDate $attrs.DateIntroduced }}{{ else }}N/A{{ end }}</td>
+                                                <td>{{ $attrs.TotalCommits }}</td>
+                                                <td>{{ $attrs.TotalLines }}</td>
                                                 <td>
                                                     <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="
-                                                    {% for contributor, line_count in attrs.lines_by_contributor.items() %}
-                                                        {{ contributor }}: {{ line_count }} lines<br>
-                                                    {% endfor %}
+                                                    {{ range $contributor, $lineCount := $attrs.LinesByContributor }}
+                                                        {{ $contributor }}: {{ $lineCount }} lines<br>
+                                                    {{ end }}
                                                     ">
-                                                        {{ attrs.top_contributor }}
+                                                        {{ $attrs.TopContributor }}
                                                     </span>
                                                 </td>
                                             </tr>
-                                            {% endif %}
-                                        {% endfor %}
+                                            {{ end }}
+                                        {{ end }}
                                     </tbody>
                                 </table>
                             </div>
@@ -222,7 +236,7 @@
                 <div class="col-lg-12 my-3">
                     <div class="card h-100 border-dark" id="commit-history">
                         <div class="card-header text-bg-dark">
-                            History of {{ head_commit_short }}
+                            History of {{ $headCommitShort }}
                         </div>
                         <div class="card-body">
                             <div class="table-responsive overflow-y-scroll">
@@ -239,23 +253,22 @@
                                         </tr>
                                     </thead>
                                     <tbody class="table-group-divider">
-                                        {% for commit in data.history %}
+                                        {{ range $commit := $data.History }}
                                         <tr>
                                             <td>
-                                                <img width="16" height="16" class="img-fluid rotate-90" alt="{{ contributor }}" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NDAgNTEyIj48IS0tIUZvbnQgQXdlc29tZSBGcmVlIDYuNS4xIGJ5IEBmb250YXdlc29tZSAtIGh0dHBzOi8vZm9udGF3ZXNvbWUuY29tIExpY2Vuc2UgLSBodHRwczovL2ZvbnRhd2Vzb21lLmNvbS9saWNlbnNlL2ZyZWUgQ29weXJpZ2h0IDIwMjQgRm9udGljb25zLCBJbmMuLS0+PHBhdGggZD0iTTMyMCAzMzZhODAgODAgMCAxIDAgMC0xNjAgODAgODAgMCAxIDAgMCAxNjB6bTE1Ni44LTQ4QzQ2MiAzNjEgMzk3LjQgNDE2IDMyMCA0MTZzLTE0Mi01NS0xNTYuOC0xMjhIMzJjLTE3LjcgMC0zMi0xNC4zLTMyLTMyczE0LjMtMzIgMzItMzJIMTYzLjJDMTc4IDE1MSAyNDIuNiA5NiAzMjAgOTZzMTQyIDU1IDE1Ni44IDEyOEg2MDhjMTcuNyAwIDMyIDE0LjMgMzIgMzJzLTE0LjMgMzItMzIgMzJINDc2Ljh6Ii8+PC9zdmc+">
-                                                <small title="{{ commit.commit }}">
-                                                    {{ commit.commit|truncate(8, False, '') }}
+                                                <!-- SVG icon removed for simplicity, can be added back if needed -->
+                                                <small title="{{ $commit.Commit }}">
+                                                    {{ ShortSha $commit.Commit }}
                                                 </small>
                                             </td>
-                                            <td>{{ commit.date }}
-                                            </td>
-                                            <td>{{ commit.contributor }}</td>
-                                            <td>{{ commit.message|truncate(60) }}</td>
-                                            <td class="text-primary">{{ commit.files|length }}</td>
-                                            <td class="text-success">+&nbsp;{{ commit.insertions }}</td>
-                                            <td class="text-danger">-&nbsp;{{ commit.deletions }}</td>
+                                            <td>{{ FormatDateTime $commit.Date }}</td>
+                                            <td>{{ CommitterName $commit.Contributor }}</td> <!-- Assuming Contributor is "Name (email)" -->
+                                            <td>{{ Truncate (CommitMsgShort $commit.Message) 60 false "..." }}</td>
+                                            <td class="text-primary">{{ Len $commit.FilesChanged }}</td>
+                                            <td class="text-success">+&nbsp;{{ $commit.Insertions }}</td>
+                                            <td class="text-danger">-&nbsp;{{ $commit.Deletions }}</td>
                                         </tr>
-                                        {% endfor %}
+                                        {{ end }}
                                     </tbody>
                                 </table>
                             </div>
