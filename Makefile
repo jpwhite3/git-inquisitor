@@ -1,3 +1,5 @@
+export PATH := $(shell go env GOPATH)/bin:$(PATH)
+
 .ONESHELL:
 .PHONY: clean clean-build clean-test help build test test-html test-debug lint lint-fix fmt version tag release bootstrap
 
@@ -61,6 +63,7 @@ fmt: ## format Go code
 	go fmt ./...
 
 version: ## set version based on date
+	@mkdir -p internal/version
 	@echo "package version\n\n// Version is the current application version\nconst Version = \"$(shell date +'%Y.%-m.%-d')\"" > internal/version/version.go
 	@echo "Version set to $(shell date +'%Y.%-m.%-d')"
 
