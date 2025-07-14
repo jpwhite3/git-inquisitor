@@ -36,7 +36,7 @@
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="#"><!-- <i class="bi bi-git"></i> --> Git Logo</a>
+                <a class="navbar-brand" href="#">Git</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -356,7 +356,8 @@
                 
                 // Group commits by date for commit history chart
                 const commitsByDate = {};
-                historyData.forEach(item => {
+                const parsedHistoryData = JSON.parse(historyData);
+                parsedHistoryData.forEach(item => {
                     const date = item.date.split('T')[0]; // Extract date part only
                     commitsByDate[date] = (commitsByDate[date] || 0) + 1;
                 });
@@ -364,7 +365,7 @@
                 // Group line changes by date
                 const insertionsByDate = {};
                 const deletionsByDate = {};
-                historyData.forEach(item => {
+                parsedHistoryData.forEach(item => {
                     const date = item.date.split('T')[0];
                     insertionsByDate[date] = (insertionsByDate[date] || 0) + item.insertions;
                     deletionsByDate[date] = (deletionsByDate[date] || 0) + item.deletions;
