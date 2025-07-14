@@ -145,7 +145,6 @@ func GetFilePaths(repo *git.Repository, commit *object.Commit) ([]string, error)
 	return files, nil
 }
 
-
 // GetBlameForFile calculates line-by-line blame information for a given file at a specific commit.
 // This is a complex function to port directly from GitPython's `repo.blame_incremental`
 // or `repo.blame`. `go-git` provides `git.Blame(c *object.Commit, path string) (*object.BlameResult, error)`.
@@ -163,7 +162,7 @@ func GetBlameForFile(repo *git.Repository, commit *object.Commit, filePath strin
 		// The Python code seems to just skip these.
 		return blameStats, fmt.Errorf("failed to get blame for file %s at commit %s: %w", filePath, commit.Hash.String(), err)
 	}
-	
+
 	if blameResult == nil || len(blameResult.Lines) == 0 {
 		return blameStats, nil // No lines or empty blame result
 	}
@@ -177,16 +176,16 @@ func GetBlameForFile(repo *git.Repository, commit *object.Commit, filePath strin
 		}
 		contributorName := strings.Split(line.Author, "<")[0]
 		contributorName = strings.TrimSpace(contributorName) // Extract name part, remove email
-		
+
 		blameStats.LinesByContributor[contributorName]++
 		blameStats.TotalLines++
-		
+
 		// Track the author of the first line as potential original author
 		// and the date of the first line's commit as potential introduction date.
 		// This is a simplification; a more accurate "date_introduced" would be the
 		// commit that *created* the file. `git.Log` with `PathFilter` could find this.
 		// The python code seems to use the date of the last commit that touched the file from blame.
-		if blameStats.TotalLines == 1 { 
+		if blameStats.TotalLines == 1 {
 			originalAuthor = contributorName
 			lastCommitDate = line.Date
 		}
@@ -194,7 +193,7 @@ func GetBlameForFile(repo *git.Repository, commit *object.Commit, filePath strin
 			lastCommitDate = line.Date
 		}
 	}
-	
+
 	blameStats.DateIntroduced = lastCommitDate // Python code uses current_date from the last blame entry.
 	blameStats.OriginalAuthor = originalAuthor // This is a guess based on first line. Python uses current_contributor from last blame entry.
 
@@ -206,7 +205,7 @@ func GetBlameForFile(repo *git.Repository, commit *object.Commit, filePath strin
 		}
 	}
 	blameStats.TotalCommits = len(distinctCommits)
-	
+
 	// Determine top contributor
 	if blameStats.TotalLines > 0 {
 		var topC string
@@ -221,20 +220,10 @@ func GetBlameForFile(repo *git.Repository, commit *object.Commit, filePath strin
 		blameStats.TopContributor = fmt.Sprintf("%s (%.2f%%)", topC, percentage)
 	}
 
-
 	return blameStats, nil
 }
 
-// FileBlameStats is a temporary struct to hold results from GetBlameForFile,
-// which will then be mapped to models.FileData.
-type FileBlameStats struct {
-	DateIntroduced     time.Time
-	OriginalAuthor     string
-	TotalCommits       int
-	TotalLines         int
-	TopContributor     string
-	LinesByContributor map[string]int
-}
+// FileBlameStats has been moved to models.FileBlameStats
 
 // GetCommitStats calculates insertions, deletions, and files changed for a commit.
 // go-git's object.CommitStats is the primary way.
@@ -250,7 +239,7 @@ func GetCommitStats(commit *object.Commit) (insertions, deletions int, filesChan
 		if errTree != nil {
 			return 0, 0, nil, fmt.Errorf("could not get tree for initial commit %s: %w", commit.Hash, errTree)
 		}
-		
+
 		var linesInCommit int
 		errIter := tree.Files().ForEach(func(f *object.File) error {
 			isBin, _ := f.IsBinary()
@@ -262,7 +251,7 @@ func GetCommitStats(commit *object.Commit) (insertions, deletions int, filesChan
 			return nil
 		})
 		if errIter != nil {
-			return 0,0,nil, fmt.Errorf("error iterating files in initial commit %s: %w", commit.Hash, errIter)
+			return 0, 0, nil, fmt.Errorf("error iterating files in initial commit %s: %w", commit.Hash, errIter)
 		}
 		return linesInCommit, 0, filesChanged, nil
 	}
@@ -277,13 +266,12 @@ func GetCommitStats(commit *object.Commit) (insertions, deletions int, filesChan
 	if err != nil {
 		return 0, 0, nil, fmt.Errorf("could not generate patch between %s and %s: %w", parentCommit.Hash, commit.Hash, err)
 	}
-	
+
 	overallStats := patch.Stats()
 	if len(overallStats) > 0 { // Patch.Stats() returns a slice, usually with one element for overall.
 		insertions = overallStats[0].Addition
 		deletions = overallStats[0].Deletion
 	}
-
 
 	for _, filePatch := range patch.FilePatches() {
 		from, to := filePatch.Files()
@@ -295,15 +283,25 @@ func GetCommitStats(commit *object.Commit) (insertions, deletions int, filesChan
 		} else {
 			continue // Should not happen
 		}
-		
-		stats := filePatch.Stats() // Addition, Deletion for this file
+
+		// Get stats manually since FilePatch doesn't have a Stats method
+		var addition, deletion int
+		for _, chunk := range filePatch.Chunks() {
+			if chunk.Type() == 0 { // Equal
+				continue
+			} else if chunk.Type() == 1 { // Add
+				addition += len(chunk.Content())
+			} else if chunk.Type() == 2 { // Delete
+				deletion += len(chunk.Content())
+			}
+		}
 		// 'Lines' in FileCommitStats is total lines in file after commit.
 		// This is hard to get from patch alone. Need to inspect the file in 'commit.Tree()'.
 		// For now, we'll leave it 0 or approximate. Python's GitPython might be doing more.
 		// The original python code `commit.stats.files` has this 'lines' field.
 		// Let's try to get it:
 		var currentLines int
-		if to != nil && !to.Mode().Isमल(0) { // Check if file exists in 'to' state and is not a symlink etc.
+		if to != nil && to.Mode() != 0 { // Check if file exists in 'to' state and is not a symlink etc.
 			file, errFile := commit.File(fileName)
 			if errFile == nil {
 				isBin, _ := file.IsBinary()
@@ -315,8 +313,8 @@ func GetCommitStats(commit *object.Commit) (insertions, deletions int, filesChan
 		}
 
 		filesChanged[fileName] = models.FileCommitStats{
-			Insertions: stats.Addition,
-			Deletions:  stats.Deletion,
+			Insertions: addition,
+			Deletions:  deletion,
 			Lines:      currentLines,
 		}
 	}

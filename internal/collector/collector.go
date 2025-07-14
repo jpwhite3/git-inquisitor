@@ -314,7 +314,7 @@ func (gdc *GitDataCollector) collectBlameDataByFile() error {
 	jobs := make(chan string, numFiles)
 	results := make(chan struct {
 		Path string
-		Stats *gitutil.FileBlameStats
+		Stats *models.FileBlameStats
 		Err error
 	}, numFiles)
 
@@ -331,7 +331,7 @@ func (gdc *GitDataCollector) collectBlameDataByFile() error {
 				blameStats, errBlame := gitutil.GetBlameForFile(gdc.repo, gdc.head, filePath)
 				results <- struct {
 					Path string
-					Stats *gitutil.FileBlameStats
+					Stats *models.FileBlameStats
 					Err error
 				}{Path: filePath, Stats: blameStats, Err: errBlame}
 			}

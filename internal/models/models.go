@@ -62,6 +62,16 @@ type FileData struct {
 	LinesByContributor  map[string]int    `json:"lines_by_contributor"`
 }
 
+// FileBlameStats stores blame information for a file.
+type FileBlameStats struct {
+	DateIntroduced     time.Time         `json:"date_introduced"`
+	OriginalAuthor     string            `json:"original_author"`
+	TotalCommits       int               `json:"total_commits"`
+	TotalLines         int               `json:"total_lines"`
+	TopContributor     string            `json:"top_contributor"`
+	LinesByContributor map[string]int    `json:"lines_by_contributor"`
+}
+
 // CommitHistoryItem represents a single commit in the repository's history.
 type CommitHistoryItem struct {
 	Commit      string    `json:"commit"` // SHA

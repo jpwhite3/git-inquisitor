@@ -10,6 +10,7 @@ import (
 	"sort"
 	"strings"
 	"time"
+	"unicode"
 
 	"github.com/user/git-inquisitor-go/internal/chart"
 	"github.com/user/git-inquisitor-go/internal/models"
@@ -90,7 +91,7 @@ func (hra *HtmlReportAdapter) PrepareData(data *models.CollectedData) error {
 	// Define template functions (Go equivalent of Jinja filters/globals)
 	funcMap := template.FuncMap{
 		"ToUpper":      strings.ToUpper,
-		"Capitalize":   strings.Title, // Note: strings.Title is deprecated, consider cases.Title
+		"Capitalize":   capitalize, // Using our own capitalize function instead of deprecated strings.Title
 		"Replace":      strings.ReplaceAll,
 		"Truncate": func(s string, length int, killwords bool, end string) string { // Basic truncate
 			if len(s) <= length {
@@ -125,18 +126,18 @@ func (hra *HtmlReportAdapter) PrepareData(data *models.CollectedData) error {
 			return lines[0] // First line as short message
 		},
 		"Len": func(item interface{}) int { // Generic length for slices/maps in template
-            switch v := item.(type) {
-            case []models.CommitHistoryItem: // Be specific if needed for type safety
-                return len(v)
-            case map[string]models.FileCommitStats:
-                return len(v)
-            case string:
-                return len(v)
-            // Add other types as necessary
-            default:
-                return 0
-            }
-        },
+	           switch v := item.(type) {
+	           case []models.CommitHistoryItem: // Be specific if needed for type safety
+	               return len(v)
+	           case map[string]models.FileCommitStats:
+	               return len(v)
+	           case string:
+	               return len(v)
+	           // Add other types as necessary
+	           default:
+	               return 0
+	           }
+	       },
 		// Add humanize functions if a library is chosen.
 		// For now, they will be missing from the template or need to be removed from it.
 		// "HumanizeMetric": func ...
@@ -186,6 +187,16 @@ func (hra *HtmlReportAdapter) PrepareData(data *models.CollectedData) error {
 	}
 	hra.reportBuf = buf
 	return nil
+}
+
+// capitalize is a replacement for the deprecated strings.Title function
+func capitalize(s string) string {
+	if s == "" {
+		return s
+	}
+	r := []rune(s)
+	r[0] = unicode.ToUpper(r[0])
+	return string(r)
 }
 
 // Write saves the HTML report data to the specified output file.

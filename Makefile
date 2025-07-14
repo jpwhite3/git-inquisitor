@@ -1,70 +1,90 @@
 .ONESHELL:
-.PHONY: clean clean-test clean-pyc clean-build docs help
+.PHONY: clean clean-build clean-test help build test test-html test-debug lint lint-fix fmt version tag release bootstrap
+
 .DEFAULT_GOAL := help
 
-define PRINT_HELP_PYSCRIPT
-import re, sys
+define PRINT_HELP_GOSCRIPT
+package main
 
-for line in sys.stdin:
-	match = re.match(r'^([a-zA-Z_-]+):.*?## (.*)$$', line)
-	if match:
-		target, help = match.groups()
-		print("%-20s %s" % (target, help))
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"regexp"
+)
+
+func main() {
+	scanner := bufio.NewScanner(os.Stdin)
+	re := regexp.MustCompile(`^([a-zA-Z_-]+):.*?## (.*)$$`)
+	
+	for scanner.Scan() {
+		line := scanner.Text()
+		matches := re.FindStringSubmatch(line)
+		if len(matches) == 3 {
+			target := matches[1]
+			help := matches[2]
+			fmt.Printf("%-20s %s\n", target, help)
+		}
+	}
+	
+	if err := scanner.Err(); err != nil {
+		fmt.Fprintf(os.Stderr, "Error reading stdin: %v\n", err)
+		os.Exit(1)
+	}
+}
 endef
-export PRINT_HELP_PYSCRIPT
-BROWSER := python -c "$$BROWSER_PYSCRIPT"
+export PRINT_HELP_GOSCRIPT
 
-help:
-	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
+help: ## display this help message
+	@go run -e "$$PRINT_HELP_GOSCRIPT" < $(MAKEFILE_LIST)
 
-clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
+clean: clean-build clean-test ## remove all build, test, coverage and artifacts
 
 clean-build: ## remove build artifacts
-	- rm -fr build/
-	- rm -fr dist/
-	- rm -fr .eggs/
-	- find . -name '*.egg-info' -exec rm -fr {} +
-	- find . -name '*.egg' -exec rm -f {} +
-
-clean-pyc: ## remove Python file artifacts
-	- find . -name '*.pyc' -exec rm -f {} +
-	- find . -name '*.pyo' -exec rm -f {} +
-	- find . -name '*~' -exec rm -f {} +
-	- find . -name '__pycache__' -exec rm -fr {} +
+	rm -rf bin/ dist/
+	rm -f *.out
 
 clean-test: ## remove test and coverage artifacts
-	rm -f .coverage*
-	rm -fr htmlcov/
-	rm -rf .pytest_cache
+	rm -f coverage.out coverage.html
+	rm -rf .test-cache
 
-test: ## run tests quickly with the default Python
-	poetry run python -m pytest tests --cov=src/git_inquisitor --cov-report=term-missing
+test: ## run tests quickly with coverage
+	go test ./... -v -cover
 
-test-debug: ## run tests quickly with the default Python
-	poetry run python -m pytest tests --pdb
+test-html: ## run tests and generate HTML coverage report
+	go test ./... -coverprofile=coverage.out && go tool cover -html=coverage.out -o coverage.html
 
-version: ## bump version of package
-	poetry run python bump_version.py
+test-debug: ## run tests with delve debugger
+	dlv test ./...
 
-publish: clean version ## package and upload a release
-	poetry publish --build
+fmt: ## format Go code
+	go fmt ./...
 
-dist: clean version ## builds source and wheel package
-	poetry build
+version: ## set version based on date
+	@echo "package version\n\n// Version is the current application version\nconst Version = \"$(shell date +'%Y.%-m.%-d')\"" > internal/version/version.go
+	@echo "Version set to $(shell date +'%Y.%-m.%-d')"
+
+build: clean version ## build binary
+	go build -o bin/git-inquisitor ./cmd/git-inquisitor
+
+lint: ## lint Go code with golangci-lint
+	golangci-lint run ./...
+
+lint-fix: ## automatically fix linting errors where possible
+	golangci-lint run --fix ./...
 
 bootstrap: ## install development dependencies
-	poetry install
+	go mod download
+	go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+	go install github.com/go-delve/delve/cmd/dlv@latest
+	go install github.com/goreleaser/goreleaser@latest
 
-lint: ## lint all python files with flake8 and black
-	poetry run flake8 ./src --count --select=E9,F63,F7,F82 --max-complexity=10 --max-line-length=127 --show-source --statistics
-
-release: dist ## create github release and upload artifacts
-	gh release create $(date +'%Y.%-m.%-d') -t $(date +'%Y.%-m.%-d') --generate-notes --verify-tag
-	gh release upload $(date +'%Y.%-m.%-d') git_inquisitor-$(date +'%Y.%-m.%-d')-py3-none-any.whl git_inquisitor-$(date +'%Y.%-m.%-d').tar.gz --clobber
-
-tag:
-	export VERSION=$(date +'%Y.%-m.%-d')
-	git tag -d $(date +'%Y.%-m.%-d')
-	git push origin ":refs/tags/$(date +'%Y.%-m.%-d')"
-	git tag -f $(date +'%Y.%-m.%-d')
+tag: ## create and push git tag with date-based version
+	export VERSION=$(shell date +'%Y.%-m.%-d')
+	git tag -d $(shell date +'%Y.%-m.%-d') 2>/dev/null || true
+	git push origin ":refs/tags/$(shell date +'%Y.%-m.%-d')" 2>/dev/null || true
+	git tag -f $(shell date +'%Y.%-m.%-d')
 	git push --tags
+
+release: clean version tag ## create github release with goreleaser
+	goreleaser release --clean

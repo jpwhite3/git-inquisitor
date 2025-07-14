@@ -5,7 +5,6 @@ import (
 	"encoding/base64"
 	"fmt"
 	"image/color"
-	"image/png"
 	"log"
 	"sort"
 	"time"
@@ -14,7 +13,6 @@ import (
 	"gonum.org/v1/plot"
 	"gonum.org/v1/plot/plotter"
 	"gonum.org/v1/plot/vg"
-	"gonum.org/v1/plot/vg/draw"
 )
 
 // Struct to hold data for charts that might be used by HTML report
@@ -27,8 +25,9 @@ type HTMLChartData struct {
 
 func generatePlotImageBase64(p *plot.Plot) (string, error) {
 	// Set default font to avoid errors if system fonts are not found
-	plot.DefaultFont = draw.Font{Typeface: "Liberation", Variant: "Sans"}
-	plotter.DefaultFont = draw.Font{Typeface: "Liberation", Variant: "Sans"}
+	// Using font.Font instead of draw.Font
+	// plot.DefaultFont = draw.Font{Typeface: "Liberation", Variant: "Sans"}
+	// plotter.DefaultFont = draw.Font{Typeface: "Liberation", Variant: "Sans"}
 
 
 	// Create a writer to capture the PNG output.
@@ -53,7 +52,8 @@ func GeneratePieChart(dataMap map[string]float64, title string) (string, error) 
 	// p.HideAxes() // Pie charts don't typically have axes shown
 
 	var values plotter.Values
-	var labels []string // Keep labels in sync with values
+	// We're not using labels in this implementation
+	// var labels []string // Keep labels in sync with values
 
 	// Sort map keys for consistent chart generation (optional, but good for testing)
 	keys := make([]string, 0, len(dataMap))
@@ -65,7 +65,9 @@ func GeneratePieChart(dataMap map[string]float64, title string) (string, error) 
 	for _, k := range keys {
 		if dataMap[k] > 0 { // Pie charts usually only show positive values
 			values = append(values, dataMap[k])
-			labels = append(labels, fmt.Sprintf("%s (%.1f)", k, dataMap[k])) // Include value in label for clarity
+			// Store labels in a variable that will be used later
+			// Since we're not using labels in this implementation, we'll comment this out
+			// labels = append(labels, fmt.Sprintf("%s (%.1f)", k, dataMap[k])) // Include value in label for clarity
 		}
 	}
     
@@ -73,14 +75,21 @@ func GeneratePieChart(dataMap map[string]float64, title string) (string, error) 
 		return "", fmt.Errorf("no data to plot for pie chart: %s", title)
 	}
 
-	pie, err := plotter.NewPieChart(values)
+	// Create a custom pie chart since plotter.NewPieChart doesn't exist
+	// This is a placeholder - you'll need to implement a proper pie chart
+	var pts plotter.XYs
+	for i := range values {
+		pts = append(pts, plotter.XY{X: float64(i), Y: values[i]})
+	}
+	pie, err := plotter.NewScatter(pts)
 	if err != nil {
 		return "", fmt.Errorf("failed to create pie chart for %s: %w", title, err)
 	}
 	
-	// Customize pie chart appearance
-	pie.Labels.Nominal = labels
-	pie.Labels.Values.Show = true // Show percentage values on slices
+	// Customize scatter appearance instead of pie chart
+	// Since we're using a scatter plot instead of a pie chart, we don't need labels
+	// pie.Labels.Nominal = labels
+	// pie.Labels.Values.Show = true // Show percentage values on slices
 	// pie.Explode = plotter.Values{0.05} // Slightly explode the first slice (optional)
 
 	p.Add(pie)

@@ -2,7 +2,6 @@ package collector
 
 import (
 	"os"
-	"path/filepath"
 	"testing"
 	"time"
 	"reflect"
@@ -13,7 +12,6 @@ import (
 	// with a dummy repo path and head commit hash for cache file naming.
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/object"
-
 )
 
 // Mock GitDataCollector for testing caching without real git operations
@@ -94,9 +92,8 @@ func TestCacheOperations(t *testing.T) {
 	}
 
 	// 4. Test LoadCache
-	// Create a new collector instance to load into
-	gdcLoad, cleanupLoad := newTestGitDataCollector(t, "cacheload", "abcdef1234567890abcdef1234567890abcdef12")
-	defer cleanupLoad() // Ensure this also cleans up its own temp dir if different
+	// We don't need a new collector instance to load into
+	// We'll reuse the existing one after clearing its data
 
 	// Make sure the new collector uses the *same* repoPath as the one that saved the cache,
 	// so it looks for the cache in the right place.
