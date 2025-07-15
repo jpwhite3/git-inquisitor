@@ -35,8 +35,9 @@ jobs:
         run: make bootstrap
 
       - name: Lint
-        id: lint
-        run: make lint
+        uses: golangci/golangci-lint-action@v8
+        with:
+          version: v2.1
 
       - name: Test
         id: test
