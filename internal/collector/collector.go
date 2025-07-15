@@ -171,7 +171,7 @@ func (gdc *GitDataCollector) Collect() error {
 			fmt.Printf("Warning: failed to process commit %s: %v\n", commit.Hash.String(), err)
 		}
 	}
-	
+
 	fmt.Println("Processing file blames...")
 	if err := gdc.collectBlameDataByFile(); err != nil {
 		return fmt.Errorf("failed to collect blame data: %w", err)
@@ -179,7 +179,7 @@ func (gdc *GitDataCollector) Collect() error {
 
 	fmt.Println("Aggregating contributor line counts...")
 	gdc.collectActiveLineCountByContributor()
-	
+
 	fmt.Println("Data collection complete.")
 	if err := gdc.SaveCache(); err != nil {
 		return fmt.Errorf("failed to save data to cache: %w", err)
@@ -203,14 +203,13 @@ func (gdc *GitDataCollector) collectMetadata() error {
 		fmt.Printf("Warning: could not get remote URL: %v\n", err)
 		remoteURL = "unknown"
 	}
-	
+
 	branchName, err := gitutil.GetRepoBranch(gdc.repo, gdc.head)
 	if err != nil {
 		fmt.Printf("Warning: could not get branch name: %v\n", err)
 		// Use HEAD SHA if branch detection failed
 		branchName = gdc.head.Hash.String() + " (error determining branch)"
 	}
-
 
 	gdc.Data.Metadata = models.Metadata{
 		Collector: models.CollectorMetadata{
@@ -238,15 +237,15 @@ func (gdc *GitDataCollector) collectCommitData(commit *object.Commit) error {
 
 	if _, ok := gdc.Data.Contributors[committerName]; !ok {
 		gdc.Data.Contributors[committerName] = models.Contributor{
-			Identities:   []string{},
-			CommitCount:  0,
-			Insertions:   0,
-			Deletions:    0,
-			ActiveLines:  0, // Calculated later
+			Identities:  []string{},
+			CommitCount: 0,
+			Insertions:  0,
+			Deletions:   0,
+			ActiveLines: 0, // Calculated later
 		}
 	}
 	contribData := gdc.Data.Contributors[committerName] // Get a copy
-	
+
 	isNewIdentity := true
 	for _, identity := range contribData.Identities {
 		if identity == committerEmail {
@@ -279,14 +278,14 @@ func (gdc *GitDataCollector) collectCommitData(commit *object.Commit) error {
 	}
 
 	historyItem := models.CommitHistoryItem{
-		Commit:      commit.Hash.String(),
-		Parents:     parentSHAs,
-		Tree:        commit.TreeHash.String(),
-		Contributor: fmt.Sprintf("%s (%s)", commit.Committer.Name, commit.Committer.Email),
-		Date:        commit.Committer.When,
-		Message:     commit.Message, // Full message for history
-		Insertions:  insertions,
-		Deletions:   deletions,
+		Commit:       commit.Hash.String(),
+		Parents:      parentSHAs,
+		Tree:         commit.TreeHash.String(),
+		Contributor:  fmt.Sprintf("%s (%s)", commit.Committer.Name, commit.Committer.Email),
+		Date:         commit.Committer.When,
+		Message:      commit.Message, // Full message for history
+		Insertions:   insertions,
+		Deletions:    deletions,
 		FilesChanged: filesChangedMap,
 	}
 	gdc.Data.History = append(gdc.Data.History, historyItem)
@@ -313,9 +312,9 @@ func (gdc *GitDataCollector) collectBlameDataByFile() error {
 
 	jobs := make(chan string, numFiles)
 	results := make(chan struct {
-		Path string
+		Path  string
 		Stats *models.FileBlameStats
-		Err error
+		Err   error
 	}, numFiles)
 
 	var wg sync.WaitGroup // Use sync.WaitGroup
@@ -323,16 +322,16 @@ func (gdc *GitDataCollector) collectBlameDataByFile() error {
 	// Start workers
 	for w := 0; w < numWorkers; w++ {
 		wg.Add(1)
-		go func(workerID int) {
+		go func(_ int) {
 			defer wg.Done()
 			// fmt.Printf("Worker %d started\n", workerID)
 			for filePath := range jobs {
 				// fmt.Printf("Worker %d processing %s\n", workerID, filePath)
 				blameStats, errBlame := gitutil.GetBlameForFile(gdc.repo, gdc.head, filePath)
 				results <- struct {
-					Path string
+					Path  string
 					Stats *models.FileBlameStats
-					Err error
+					Err   error
 				}{Path: filePath, Stats: blameStats, Err: errBlame}
 			}
 			// fmt.Printf("Worker %d finished\n", workerID)
@@ -348,9 +347,9 @@ func (gdc *GitDataCollector) collectBlameDataByFile() error {
 	// Collect results
 	// It's important to wait for all workers to finish *before* closing the results channel.
 	// The easiest way to manage this is to know how many results to expect.
-	
+
 	fmt.Println("Waiting for file blame processing to complete...")
-	
+
 	// Wait for all workers to complete in a separate goroutine
 	// so that we don't block collecting results if a worker goroutine panics.
 	go func() {

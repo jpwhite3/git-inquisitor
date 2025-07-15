@@ -43,7 +43,6 @@ func createTestRepo(t *testing.T) (string, func()) {
 		t.Fatalf("Failed to set git user.email: %v", err)
 	}
 
-
 	return repoPath, cleanup
 }
 
@@ -71,7 +70,7 @@ func TestGetHeadCommit(t *testing.T) {
 
 	// Make an initial commit
 	filePath := filepath.Join(repoPath, "test.txt")
-	if err := os.WriteFile(filePath, []byte("initial commit"), 0644); err != nil {
+	if err := os.WriteFile(filePath, []byte("initial commit"), 0600); err != nil {
 		t.Fatalf("Failed to write file: %v", err)
 	}
 	cmd := exec.Command("git", "add", "test.txt")
@@ -98,14 +97,13 @@ func TestGetHeadCommit(t *testing.T) {
 	}
 }
 
-
 func TestGetRepoBranch(t *testing.T) {
 	repoPath, cleanup := createTestRepo(t)
 	defer cleanup()
 
 	// 1. Test on a branch
 	filePath := filepath.Join(repoPath, "file1.txt")
-	if err := os.WriteFile(filePath, []byte("content1"), 0644); err != nil {
+	if err := os.WriteFile(filePath, []byte("content1"), 0600); err != nil {
 		t.Fatalf("Failed to write file: %v", err)
 	}
 	if err := exec.Command("git", "-C", repoPath, "add", filePath).Run(); err != nil {
@@ -114,13 +112,13 @@ func TestGetRepoBranch(t *testing.T) {
 	if err := exec.Command("git", "-C", repoPath, "commit", "-m", "commit1").Run(); err != nil {
 		t.Fatalf("Failed to git commit: %v", err)
 	}
-	
+
 	// Create and checkout a new branch
 	if err := exec.Command("git", "-C", repoPath, "checkout", "-b", "feature-branch").Run(); err != nil {
 		t.Fatalf("Failed to checkout branch: %v", err)
 	}
 	filePath2 := filepath.Join(repoPath, "file2.txt")
-	if err := os.WriteFile(filePath2, []byte("content2"), 0644); err != nil {
+	if err := os.WriteFile(filePath2, []byte("content2"), 0600); err != nil {
 		t.Fatalf("Failed to write file: %v", err)
 	}
 	if err := exec.Command("git", "-C", repoPath, "add", filePath2).Run(); err != nil {
@@ -129,7 +127,6 @@ func TestGetRepoBranch(t *testing.T) {
 	if err := exec.Command("git", "-C", repoPath, "commit", "-m", "commit2 on feature").Run(); err != nil {
 		t.Fatalf("Failed to git commit: %v", err)
 	}
-
 
 	repo, _ := OpenRepository(repoPath)
 	headCommit, _ := GetHeadCommit(repo)
@@ -151,7 +148,7 @@ func TestGetRepoBranch(t *testing.T) {
 	if err := exec.Command("git", "-C", repoPath, "checkout", commitHash).Run(); err != nil {
 		t.Fatalf("Failed to checkout commit: %v", err)
 	}
-	
+
 	repoDetached, _ := OpenRepository(repoPath) // Re-open repo to refresh its state
 	headCommitDetached, _ := GetHeadCommit(repoDetached)
 	branchNameDetached, errDetached := GetRepoBranch(repoDetached, headCommitDetached)
@@ -161,7 +158,7 @@ func TestGetRepoBranch(t *testing.T) {
 		// However, go-git might resolve it cleanly.
 		t.Logf("GetRepoBranch() in detached state returned error (might be okay): %v", errDetached)
 	}
-	
+
 	// In detached HEAD, go-git might return the full ref name like "refs/heads/master" if it was on master before detaching
 	// or just the hash. The Python code returns "commit_sha (detached)". We match that.
 	if !strings.HasSuffix(branchNameDetached, "(detached)") {
@@ -172,7 +169,6 @@ func TestGetRepoBranch(t *testing.T) {
 	}
 }
 
-
 func TestGetCommitDetails(t *testing.T) {
 	// Create a test repo with a commit
 	repoPath, cleanup := createTestRepo(t)
@@ -180,17 +176,17 @@ func TestGetCommitDetails(t *testing.T) {
 
 	// Make an initial commit
 	filePath := filepath.Join(repoPath, "test.txt")
-	if err := os.WriteFile(filePath, []byte("test commit details"), 0644); err != nil {
+	if err := os.WriteFile(filePath, []byte("test commit details"), 0600); err != nil {
 		t.Fatalf("Failed to write file: %v", err)
 	}
-	
+
 	// Configure the commit with specific author/committer
 	cmd := exec.Command("git", "add", "test.txt")
 	cmd.Dir = repoPath
 	if err := cmd.Run(); err != nil {
 		t.Fatalf("Failed to git add: %v", err)
 	}
-	
+
 	commitMsg := "Test commit message\nThis is the body."
 	cmd = exec.Command("git", "commit", "-m", commitMsg)
 	cmd.Dir = repoPath
@@ -230,18 +226,18 @@ func TestGetCommitDetails(t *testing.T) {
 	if !strings.HasPrefix(details.SHA, hash[:8]) {
 		t.Errorf("SHA = %s, should start with %s", details.SHA, hash[:8])
 	}
-	
+
 	// Check Tree
 	if !strings.HasPrefix(details.Tree, treeHash[:8]) {
 		t.Errorf("Tree = %s, should start with %s", details.Tree, treeHash[:8])
 	}
-	
+
 	// Check Contributor (format: "Name (email)")
 	// The actual name and email might vary depending on the git config
 	if !strings.Contains(details.Contributor, "(") || !strings.Contains(details.Contributor, ")") {
 		t.Errorf("Contributor = %s, should be in format 'Name (email)'", details.Contributor)
 	}
-	
+
 	// Check Message (only first line)
 	expectedMessage := "Test commit message"
 	if details.Message != expectedMessage {
@@ -254,17 +250,17 @@ func TestGetFilePaths(t *testing.T) {
 	defer cleanup()
 
 	// Create some files and a directory
-	if err := os.WriteFile(filepath.Join(repoPath, "file1.txt"), []byte("content1"), 0644); err != nil {
+	if err := os.WriteFile(filepath.Join(repoPath, "file1.txt"), []byte("content1"), 0600); err != nil {
 		t.Fatalf("Failed to write file: %v", err)
 	}
 	if err := os.Mkdir(filepath.Join(repoPath, "subdir"), 0755); err != nil {
 		t.Fatalf("Failed to create directory: %v", err)
 	}
-	if err := os.WriteFile(filepath.Join(repoPath, "subdir", "file2.txt"), []byte("content2"), 0644); err != nil {
+	if err := os.WriteFile(filepath.Join(repoPath, "subdir", "file2.txt"), []byte("content2"), 0600); err != nil {
 		t.Fatalf("Failed to write file: %v", err)
 	}
 	// Add a binary file (though our IsBinary check might be simple)
-	if err := os.WriteFile(filepath.Join(repoPath, "binary.dat"), []byte{0, 1, 2, 0, 0, 255}, 0644); err != nil {
+	if err := os.WriteFile(filepath.Join(repoPath, "binary.dat"), []byte{0, 1, 2, 0, 0, 255}, 0600); err != nil {
 		t.Fatalf("Failed to write binary file: %v", err)
 	}
 
@@ -277,7 +273,7 @@ func TestGetFilePaths(t *testing.T) {
 
 	repo, _ := OpenRepository(repoPath)
 	headCommit, _ := GetHeadCommit(repo)
-	
+
 	paths, err := GetFilePaths(repo, headCommit)
 	if err != nil {
 		t.Fatalf("GetFilePaths() error = %v", err)
@@ -321,7 +317,7 @@ func TestGetBlameForFile_Smoke(t *testing.T) {
 	defer cleanup()
 
 	filePath := filepath.Join(repoPath, "blame_test.txt")
-	if err := os.WriteFile(filePath, []byte("line1\nline2\nline3"), 0644); err != nil {
+	if err := os.WriteFile(filePath, []byte("line1\nline2\nline3"), 0600); err != nil {
 		t.Fatalf("Failed to write file: %v", err)
 	}
 	if err := exec.Command("git", "-C", repoPath, "add", filePath).Run(); err != nil {
@@ -332,13 +328,12 @@ func TestGetBlameForFile_Smoke(t *testing.T) {
 	}
 
 	// Modify the file
-	if err := os.WriteFile(filePath, []byte("line1 changed\nline2\nline3 new"), 0644); err != nil {
+	if err := os.WriteFile(filePath, []byte("line1 changed\nline2\nline3 new"), 0600); err != nil {
 		t.Fatalf("Failed to write file: %v", err)
 	}
 	if err := exec.Command("git", "-C", repoPath, "commit", "-am", "Modified content for blame").Run(); err != nil {
 		t.Fatalf("Failed to git commit: %v", err)
 	}
-
 
 	repo, _ := OpenRepository(repoPath)
 	headCommit, _ := GetHeadCommit(repo)
@@ -362,7 +357,7 @@ func TestGetCommitStats_Smoke(t *testing.T) {
 	defer cleanup()
 
 	// Initial commit
-	if err := os.WriteFile(filepath.Join(repoPath, "stats_file.txt"), []byte("a\nb\nc"), 0644); err != nil {
+	if err := os.WriteFile(filepath.Join(repoPath, "stats_file.txt"), []byte("a\nb\nc"), 0600); err != nil {
 		t.Fatalf("Failed to write file: %v", err)
 	}
 	if err := exec.Command("git", "-C", repoPath, "add", ".").Run(); err != nil {
@@ -375,10 +370,10 @@ func TestGetCommitStats_Smoke(t *testing.T) {
 	initialCommit, _ := GetHeadCommit(repo) // This is the first commit
 
 	// Second commit (additions and a new file)
-	if err := os.WriteFile(filepath.Join(repoPath, "stats_file.txt"), []byte("a\nb\nc\nd\ne"), 0644); err != nil { // 2 new lines
+	if err := os.WriteFile(filepath.Join(repoPath, "stats_file.txt"), []byte("a\nb\nc\nd\ne"), 0600); err != nil { // 2 new lines
 		t.Fatalf("Failed to write file: %v", err)
 	}
-	if err := os.WriteFile(filepath.Join(repoPath, "stats_file2.txt"), []byte("new1\nnew2"), 0644); err != nil { // 2 new lines in new file
+	if err := os.WriteFile(filepath.Join(repoPath, "stats_file2.txt"), []byte("new1\nnew2"), 0600); err != nil { // 2 new lines in new file
 		t.Fatalf("Failed to write file: %v", err)
 	}
 	if err := exec.Command("git", "-C", repoPath, "add", ".").Run(); err != nil {
@@ -387,7 +382,7 @@ func TestGetCommitStats_Smoke(t *testing.T) {
 	if err := exec.Command("git", "-C", repoPath, "commit", "-m", "second for stats").Run(); err != nil {
 		t.Fatalf("Failed to git commit: %v", err)
 	}
-	
+
 	secondCommit, _ := GetHeadCommit(repo) // This is the second commit
 
 	// Test stats for initial commit
@@ -403,12 +398,9 @@ func TestGetCommitStats_Smoke(t *testing.T) {
 	}
 	if _, ok := filesInitial["stats_file.txt"]; !ok {
 		t.Error("Initial commit files map missing stats_file.txt")
-	} else {
-		if filesInitial["stats_file.txt"].Insertions != 3 {
-			t.Errorf("Initial commit stats_file.txt insertions = %d, want 3", filesInitial["stats_file.txt"].Insertions)
-		}
+	} else if filesInitial["stats_file.txt"].Insertions != 3 {
+		t.Errorf("Initial commit stats_file.txt insertions = %d, want 3", filesInitial["stats_file.txt"].Insertions)
 	}
-
 
 	// Test stats for second commit (diff from first)
 	insertionsSecond, _, filesSecond, errSecond := GetCommitStats(secondCommit)
@@ -420,7 +412,7 @@ func TestGetCommitStats_Smoke(t *testing.T) {
 	if insertionsSecond <= 0 {
 		t.Errorf("Second commit should have insertions > 0, got %d. Files: %+v", insertionsSecond, filesSecond)
 	}
-	
+
 	// Check that the files are present in the map
 	if _, ok := filesSecond["stats_file.txt"]; !ok {
 		t.Error("Second commit files map missing stats_file.txt")
@@ -429,7 +421,6 @@ func TestGetCommitStats_Smoke(t *testing.T) {
 		t.Error("Second commit files map missing stats_file2.txt")
 	}
 }
-
 
 // MockCommit struct removed as it's not used in the tests
 
@@ -464,7 +455,7 @@ func TestIterateCommits_Order(t *testing.T) {
 	if err := exec.Command("git", "-C", repoPath, "add", ".").Run(); err != nil {
 		t.Fatalf("Failed to git add: %v", err)
 	}
-	if err := exec.Command("git", "-C", repoPath, "commit", "--date", c2Time.Format(time.RFC3339),"-m", "c2").Run(); err != nil {
+	if err := exec.Command("git", "-C", repoPath, "commit", "--date", c2Time.Format(time.RFC3339), "-m", "c2").Run(); err != nil {
 		t.Fatalf("Failed to git commit: %v", err)
 	}
 	c2HashOut, _ := exec.Command("git", "-C", repoPath, "rev-parse", "HEAD").Output()
@@ -485,7 +476,6 @@ func TestIterateCommits_Order(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to get commit hash: %v", err)
 	}
-
 
 	repo, _ := OpenRepository(repoPath)
 	headCommit, _ := GetHeadCommit(repo)

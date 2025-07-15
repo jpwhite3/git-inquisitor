@@ -18,7 +18,7 @@ type HTMLChartData struct {
 
 // PopulateHTMLChartData returns an empty HTMLChartData struct
 // as we're now using Chart.js for interactive charts directly in the template
-func PopulateHTMLChartData(data *models.CollectedData) (HTMLChartData, error) {
+func PopulateHTMLChartData(_ *models.CollectedData) (HTMLChartData, error) {
 	log.Println("Using Chart.js for interactive charts instead of static images")
 	return HTMLChartData{}, nil
 }

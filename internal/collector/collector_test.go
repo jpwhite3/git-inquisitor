@@ -2,9 +2,9 @@ package collector
 
 import (
 	"os"
+	"reflect"
 	"testing"
 	"time"
-	"reflect"
 
 	"github.com/user/git-inquisitor-go/internal/models"
 	// Need a way to mock git repo for collector or use a real one
@@ -19,7 +19,7 @@ func newTestGitDataCollector(t *testing.T, repoPathBase string, headHash string)
 	t.Helper()
 	// Create a unique temp dir for this test's "repo"
 	// This ensures cache paths are unique and don't collide between tests.
-	
+
 	// The repoPath for the collector should be where .inquisitor/cache will be created.
 	// We can use a temp dir that simulates the actual repo structure for caching.
 	tmpRepoPath, err := os.MkdirTemp("", repoPathBase+"_repo_")
@@ -32,7 +32,7 @@ func newTestGitDataCollector(t *testing.T, repoPathBase string, headHash string)
 	dummyHeadCommit := &object.Commit{
 		Hash: plumbing.NewHash(headHash),
 	}
-	
+
 	gdc := &GitDataCollector{
 		RepoPath: tmpRepoPath, // This is where .inquisitor/cache will be created
 		head:     dummyHeadCommit,
@@ -46,14 +46,13 @@ func newTestGitDataCollector(t *testing.T, repoPathBase string, headHash string)
 			History:      []models.CommitHistoryItem{},
 		},
 	}
-	
+
 	cleanup := func() {
 		os.RemoveAll(tmpRepoPath) // Clean up the temp repo dir and its .inquisitor cache
 	}
 
 	return gdc, cleanup
 }
-
 
 func TestCacheOperations(t *testing.T) {
 	gdc, cleanup := newTestGitDataCollector(t, "cachetest", "abcdef1234567890abcdef1234567890abcdef12")
@@ -62,11 +61,11 @@ func TestCacheOperations(t *testing.T) {
 	// Populate some dummy data
 	gdc.Data.Metadata.Collector.DateCollected = time.Now().Truncate(time.Second) // Truncate for comparison
 	gdc.Data.Contributors["testuser"] = models.Contributor{
-		Identities:   []string{"test@example.com"},
-		CommitCount:  10,
-		Insertions:   100,
-		Deletions:    50,
-		ActiveLines:  200,
+		Identities:  []string{"test@example.com"},
+		CommitCount: 10,
+		Insertions:  100,
+		Deletions:   50,
+		ActiveLines: 200,
 	}
 	gdc.Data.History = append(gdc.Data.History, models.CommitHistoryItem{
 		Commit:      "commit1",
@@ -74,7 +73,6 @@ func TestCacheOperations(t *testing.T) {
 		Date:        time.Now().Add(-1 * time.Hour).Truncate(time.Second),
 		Message:     "Test commit",
 	})
-
 
 	// 1. Test CacheExists - should not exist initially
 	if gdc.CacheExists() {
@@ -100,7 +98,7 @@ func TestCacheOperations(t *testing.T) {
 	// The newTestGitDataCollector creates a unique temp dir for RepoPath.
 	// To test loading, we need to point gdcLoad to the same path gdc used.
 	// Simpler: just use the same gdc instance after clearing its Data field.
-	
+
 	// Clear current data to ensure it's loaded from cache
 	originalData := gdc.Data
 	gdc.Data = models.CollectedData{ // Reset
@@ -108,7 +106,6 @@ func TestCacheOperations(t *testing.T) {
 		Files:        make(map[string]models.FileData),
 		History:      []models.CommitHistoryItem{},
 	}
-
 
 	if err := gdc.LoadCache(); err != nil {
 		t.Fatalf("LoadCache() error = %v", err)
@@ -124,15 +121,12 @@ func TestCacheOperations(t *testing.T) {
 	if !reflect.DeepEqual(gdc.Data.Contributors, originalData.Contributors) {
 		t.Errorf("Loaded Contributors = %+v, want %+v", gdc.Data.Contributors, originalData.Contributors)
 	}
-    if len(gdc.Data.History) != len(originalData.History) {
-        t.Errorf("Loaded History length = %d, want %d", len(gdc.Data.History), len(originalData.History))
-    } else {
-        // DeepEqual on slices containing time.Time might still be tricky. Compare element by element if needed.
-        if !reflect.DeepEqual(gdc.Data.History, originalData.History) {
-             t.Errorf("Loaded History = %+v, want %+v", gdc.Data.History, originalData.History)
-        }
-    }
-
+	if len(gdc.Data.History) != len(originalData.History) {
+		t.Errorf("Loaded History length = %d, want %d", len(gdc.Data.History), len(originalData.History))
+	} else if !reflect.DeepEqual(gdc.Data.History, originalData.History) {
+		// DeepEqual on slices containing time.Time might still be tricky. Compare element by element if needed.
+		t.Errorf("Loaded History = %+v, want %+v", gdc.Data.History, originalData.History)
+	}
 
 	// 5. Test ClearCache
 	if err := gdc.ClearCache(); err != nil {
@@ -160,7 +154,7 @@ func TestCollect_MetadataPopulation(t *testing.T) {
 		t.Fatalf("Failed to create temp dir: %v", err)
 	}
 	defer os.RemoveAll(tmpRepo)
-	
+
 	// Create a dummy .git folder to satisfy NewGitDataCollector's repo opening
 	// This won't be a fully functional git repo for go-git, but enough to get past PlainOpen.
 	// For actual git operations like GetHeadCommit, it would fail.
@@ -170,7 +164,7 @@ func TestCollect_MetadataPopulation(t *testing.T) {
 
 	// To test collectMetadata, we need a valid gdc.repo and gdc.head.
 	// This is becoming an integration test for NewGitDataCollector + collectMetadata.
-	
+
 	// Let's use the gitutil_test helper by moving it to a testutil package or by using build tags.
 	// For now, let's skip detailed Collect() test due to setup complexity.
 	// The cache test above covers the file I/O part of caching.

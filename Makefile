@@ -73,8 +73,19 @@ build: clean version ## build binary
 run: build ## run binary
 	./bin/git-inquisitor
 
-lint: ## lint Go code with golangci-lint
-	golangci-lint run ./...
+lint:
+	@echo "Linting Go files..."
+	@# Check if golangci-lint is installed
+	@if ! command -v golangci-lint &> /dev/null; then \
+		echo "golangci-lint not found. Please run 'make install-linter'."; \
+		exit 1; \
+	fi
+	@golangci-lint run
+
+# Install golangci-lint latest stable version
+install-linter:
+	@echo "Installing golangci-lint v2.1.6..."
+	@go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.1.6
 
 lint-fix: ## automatically fix linting errors where possible
 	golangci-lint run --fix ./...

@@ -19,21 +19,21 @@ import (
 	// Example: "github.com/dustin/go-humanize"
 )
 
-// ReportAdapter defines the interface for generating different report formats.
-type ReportAdapter interface {
+// Adapter defines the interface for generating different report formats.
+type Adapter interface {
 	PrepareData(data *models.CollectedData) error
 	Write(outputFilePath string) error
 }
 
 // --- JSON Report Adapter ---
 
-// JsonReportAdapter generates reports in JSON format.
-type JsonReportAdapter struct {
+// JSONReportAdapter generates reports in JSON format.
+type JSONReportAdapter struct {
 	reportData string
 }
 
 // PrepareData marshals the collected data into a JSON string.
-func (jra *JsonReportAdapter) PrepareData(data *models.CollectedData) error {
+func (jra *JSONReportAdapter) PrepareData(data *models.CollectedData) error {
 	jsonData, err := json.MarshalIndent(data, "", "  ") // Use indent for readability
 	if err != nil {
 		return fmt.Errorf("failed to marshal data to JSON: %w", err)
@@ -43,24 +43,24 @@ func (jra *JsonReportAdapter) PrepareData(data *models.CollectedData) error {
 }
 
 // Write saves the JSON report data to the specified output file.
-func (jra *JsonReportAdapter) Write(outputFilePath string) error {
+func (jra *JSONReportAdapter) Write(outputFilePath string) error {
 	if err := os.MkdirAll(filepath.Dir(outputFilePath), 0755); err != nil {
 		return fmt.Errorf("failed to create directory for report file %s: %w", outputFilePath, err)
 	}
-	return os.WriteFile(outputFilePath, []byte(jra.reportData), 0644)
+	return os.WriteFile(outputFilePath, []byte(jra.reportData), 0600)
 }
 
 // --- HTML Report Adapter ---
 
-// HtmlReportAdapter generates reports in HTML format.
-type HtmlReportAdapter struct {
+// HTMLReportAdapter generates reports in HTML format.
+type HTMLReportAdapter struct {
 	rawDatarawData *models.CollectedData
-	chartData  chart.HTMLChartData
-	reportBuf  bytes.Buffer // To store rendered HTML
+	chartData      chart.HTMLChartData
+	reportBuf      bytes.Buffer // To store rendered HTML
 }
 
 // PrepareData prepares data for HTML report, including generating charts.
-func (hra *HtmlReportAdapter) PrepareData(data *models.CollectedData) error {
+func (hra *HTMLReportAdapter) PrepareData(data *models.CollectedData) error {
 	hra.rawDatarawData = data
 
 	// Sort history by date (descending, newest first) as in Python version for display
@@ -69,7 +69,7 @@ func (hra *HtmlReportAdapter) PrepareData(data *models.CollectedData) error {
 	sort.SliceStable(hra.rawDatarawData.History, func(i, j int) bool {
 		return hra.rawDatarawData.History[i].Date.After(hra.rawDatarawData.History[j].Date)
 	})
-	
+
 	// Sort files by path for consistent display
 	// This wasn't explicitly done in Python but is good practice for Go maps.
 	// However, the template ranges over `data.files` which is a map, so order isn't guaranteed
@@ -82,17 +82,16 @@ func (hra *HtmlReportAdapter) PrepareData(data *models.CollectedData) error {
 		// Log the error but attempt to generate report without charts or with partial charts
 		fmt.Printf("Warning: Error generating chart data: %v. HTML report may be incomplete.\n", err)
 		// Initialize charts struct to avoid nil pointer if some charts failed
-		hra.chartData = chart.HTMLChartData{} 
+		hra.chartData = chart.HTMLChartData{}
 	} else {
 		hra.chartData = charts
 	}
-	
 
 	// Define template functions (Go equivalent of Jinja filters/globals)
 	funcMap := template.FuncMap{
-		"ToUpper":      strings.ToUpper,
-		"Capitalize":   capitalize, // Using our own capitalize function instead of deprecated strings.Title
-		"Replace":      strings.ReplaceAll,
+		"ToUpper":    strings.ToUpper,
+		"Capitalize": capitalize, // Using our own capitalize function instead of deprecated strings.Title
+		"Replace":    strings.ReplaceAll,
 		"json": func(v interface{}) string {
 			jsonBytes, err := json.Marshal(v)
 			if err != nil {
@@ -133,18 +132,18 @@ func (hra *HtmlReportAdapter) PrepareData(data *models.CollectedData) error {
 			return lines[0] // First line as short message
 		},
 		"Len": func(item interface{}) int { // Generic length for slices/maps in template
-	           switch v := item.(type) {
-	           case []models.CommitHistoryItem: // Be specific if needed for type safety
-	               return len(v)
-	           case map[string]models.FileCommitStats:
-	               return len(v)
-	           case string:
-	               return len(v)
-	           // Add other types as necessary
-	           default:
-	               return 0
-	           }
-	       },
+			switch v := item.(type) {
+			case []models.CommitHistoryItem: // Be specific if needed for type safety
+				return len(v)
+			case map[string]models.FileCommitStats:
+				return len(v)
+			case string:
+				return len(v)
+			// Add other types as necessary
+			default:
+				return 0
+			}
+		},
 		// Add humanize functions if a library is chosen.
 		// For now, they will be missing from the template or need to be removed from it.
 		// "HumanizeMetric": func ...
@@ -173,7 +172,6 @@ func (hra *HtmlReportAdapter) PrepareData(data *models.CollectedData) error {
 			}
 		}
 	}
-
 
 	tmpl, err := template.New(filepath.Base(tmplPath)).Funcs(funcMap).ParseFiles(tmplPath)
 	if err != nil {
@@ -207,9 +205,9 @@ func capitalize(s string) string {
 }
 
 // Write saves the HTML report data to the specified output file.
-func (hra *HtmlReportAdapter) Write(outputFilePath string) error {
+func (hra *HTMLReportAdapter) Write(outputFilePath string) error {
 	if err := os.MkdirAll(filepath.Dir(outputFilePath), 0755); err != nil {
 		return fmt.Errorf("failed to create directory for HTML report file %s: %w", outputFilePath, err)
 	}
-	return os.WriteFile(outputFilePath, hra.reportBuf.Bytes(), 0644)
+	return os.WriteFile(outputFilePath, hra.reportBuf.Bytes(), 0600)
 }

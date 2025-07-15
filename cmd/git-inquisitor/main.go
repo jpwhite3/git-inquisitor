@@ -28,7 +28,7 @@ file level contribution statistics, and contributor level statistics.`,
 		Short: "Collects data from a git repository and caches it.",
 		Long:  `Scans a git repository located at REPO_PATH, collects various metrics and statistics, and caches the results for later reporting.`,
 		Args:  cobra.ExactArgs(1), // Requires exactly one argument: repo-path
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(_ *cobra.Command, args []string) error {
 			repoPath := args[0]
 			absRepoPath, err := filepath.Abs(repoPath)
 			if err != nil {
@@ -48,12 +48,11 @@ file level contribution statistics, and contributor level statistics.`,
 			}
 			// Basic check for .git directory
 			if _, err := os.Stat(filepath.Join(absRepoPath, ".git")); os.IsNotExist(err) {
-                 // Could also be a bare repo, where absRepoPath itself is .git, or has HEAD file
-                if _, errHead := os.Stat(filepath.Join(absRepoPath, "HEAD")); os.IsNotExist(errHead) {
-                    return fmt.Errorf("'%s' does not appear to be a git repository (missing .git directory or HEAD file)", absRepoPath)
-                }
+				// Could also be a bare repo, where absRepoPath itself is .git, or has HEAD file
+				if _, errHead := os.Stat(filepath.Join(absRepoPath, "HEAD")); os.IsNotExist(errHead) {
+					return fmt.Errorf("'%s' does not appear to be a git repository (missing .git directory or HEAD file)", absRepoPath)
+				}
 			}
-
 
 			fmt.Printf("Collecting data for repository: %s\n", absRepoPath)
 			col, err := collector.NewGitDataCollector(absRepoPath)
@@ -83,7 +82,7 @@ file level contribution statistics, and contributor level statistics.`,
 		Long: `Generates a report in the specified format (html or json) using previously 
 collected data for the git repository at REPO_PATH.`,
 		Args: cobra.ExactArgs(2), // Requires repo-path and report-format
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(_ *cobra.Command, args []string) error {
 			repoPath := args[0]
 			reportFormat := args[1]
 
@@ -91,7 +90,7 @@ collected data for the git repository at REPO_PATH.`,
 			if err != nil {
 				return fmt.Errorf("error getting absolute path for '%s': %w", repoPath, err)
 			}
-			
+
 			// Validate report format
 			if reportFormat != "html" && reportFormat != "json" {
 				return fmt.Errorf("invalid report format '%s'. Must be 'html' or 'json'", reportFormat)
@@ -106,7 +105,6 @@ collected data for the git repository at REPO_PATH.`,
 				return fmt.Errorf("invalid output file path '%s': %w", outputFilePath, err)
 			}
 
-
 			fmt.Printf("Generating %s report for repository: %s\n", reportFormat, absRepoPath)
 			col, err := collector.NewGitDataCollector(absRepoPath)
 			if err != nil {
@@ -119,12 +117,12 @@ collected data for the git repository at REPO_PATH.`,
 				// If collection fails (e.g. repo disappeared after initial collect command), report should fail.
 				return fmt.Errorf("failed to load or collect data for %s: %w", absRepoPath, err)
 			}
-			
-			var adapter report.ReportAdapter
+
+			var adapter report.Adapter
 			if reportFormat == "html" {
-				adapter = &report.HtmlReportAdapter{}
+				adapter = &report.HTMLReportAdapter{}
 			} else { // reportFormat == "json"
-				adapter = &report.JsonReportAdapter{}
+				adapter = &report.JSONReportAdapter{}
 			}
 
 			fmt.Println("Preparing report data...")
@@ -148,7 +146,6 @@ func init() {
 	reportCmd.Flags().StringVarP(&outputFilePath, "output-file-path", "o", "", "Output file path for the report")
 	// Example for adding a flag to collectCmd if needed later:
 	// collectCmd.Flags().Bool("clear-cache", false, "Clears existing cache before collecting")
-
 
 	// Add subcommands to rootCmd
 	rootCmd.AddCommand(collectCmd)

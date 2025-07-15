@@ -32,11 +32,11 @@ func getTestCollectedData() *models.CollectedData {
 		},
 		Contributors: map[string]models.Contributor{
 			"Test User": {
-				Identities:   []string{"test@example.com"},
-				CommitCount:  1,
-				Insertions:   10,
-				Deletions:    2,
-				ActiveLines:  8,
+				Identities:  []string{"test@example.com"},
+				CommitCount: 1,
+				Insertions:  10,
+				Deletions:   2,
+				ActiveLines: 8,
 			},
 		},
 		Files: map[string]models.FileData{
@@ -64,13 +64,13 @@ func getTestCollectedData() *models.CollectedData {
 	}
 }
 
-func TestJsonReportAdapter(t *testing.T) {
+func TestJSONReportAdapter(t *testing.T) {
 	data := getTestCollectedData()
-	adapter := &JsonReportAdapter{}
+	adapter := &JSONReportAdapter{}
 
 	err := adapter.PrepareData(data)
 	if err != nil {
-		t.Fatalf("JsonReportAdapter.PrepareData() error = %v", err)
+		t.Fatalf("JSONReportAdapter.PrepareData() error = %v", err)
 	}
 
 	// Check if reportData is valid JSON
@@ -88,7 +88,7 @@ func TestJsonReportAdapter(t *testing.T) {
 
 	outputFile := filepath.Join(tmpDir, "report.json")
 	if err := adapter.Write(outputFile); err != nil {
-		t.Fatalf("JsonReportAdapter.Write() error = %v", err)
+		t.Fatalf("JSONReportAdapter.Write() error = %v", err)
 	}
 
 	_, err = os.Stat(outputFile)
@@ -97,29 +97,29 @@ func TestJsonReportAdapter(t *testing.T) {
 	}
 }
 
-func TestHtmlReportAdapter_TemplateFunctions(t *testing.T) {
+func TestHTMLReportAdapter_TemplateFunctions(t *testing.T) {
 	// Test some of the template functions directly
-	adapter := &HtmlReportAdapter{}
-	data := getTestCollectedData() 
+	adapter := &HTMLReportAdapter{}
+	data := getTestCollectedData()
 	// Need to call PrepareData to initialize funcMap, but we don't need a full template execution here.
 	// This is a bit of a workaround. Ideally, funcMap could be tested more directly.
-	
+
 	// Create a dummy template file for PrepareData to find.
 	tmpDir, _ := os.MkdirTemp("", "temptest")
 	defer os.RemoveAll(tmpDir)
 	dummyTemplatePath := filepath.Join(tmpDir, "report.html.template")
-	if err := os.WriteFile(dummyTemplatePath, []byte("{{ define \"report.html.template\" }}Hello{{end}}"), 0644); err != nil {
+	if err := os.WriteFile(dummyTemplatePath, []byte("{{ define \"report.html.template\" }}Hello{{end}}"), 0600); err != nil {
 		t.Fatalf("Failed to write dummy template file: %v", err)
 	}
-	
+
 	// Temporarily change current working directory for template finding, or use absolute paths.
 	// For simplicity in test, let's assume template can be found or PrepareData handles it.
 	// We need to ensure `PopulateHTMLChartData` doesn't fail if it's called.
 	// We can mock chart.PopulateHTMLChartData or ensure it handles nil data gracefully.
-	
+
 	// To test the funcs, we need to execute a minimal template using them.
 	// The funcMap is created within PrepareData.
-	
+
 	// Minimal template for testing specific functions
 	testCases := []struct {
 		name     string
@@ -127,14 +127,13 @@ func TestHtmlReportAdapter_TemplateFunctions(t *testing.T) {
 		data     interface{}
 		expected string
 	}{
-		{"Truncate", `{{ Truncate .S 10 false "..." }}`, struct{S string}{"This is a long string"}, "This is..." },
-		{"TruncateShort", `{{ Truncate .S 10 false "..." }}`, struct{S string}{"Short"}, "Short" },
-		{"FormatDateTime", `{{ FormatDateTime .T }}`, struct{T time.Time}{time.Date(2023,1,1,15,30,0,0,time.UTC)}, "2023-01-01 15:30:00 UTC"},
-		{"ShortSha", `{{ ShortSha .S }}`, struct{S string}{"abcdef12345"}, "abcdef12"},
-		{"CommitterName", `{{ CommitterName .S }}`, struct{S string}{"Real Name (email@example.com)"}, "Real Name"},
-		{"CommitMsgShort", `{{ CommitMsgShort .S }}`, struct{S string}{"Subject\n\nBody"}, "Subject"},
-		{"LenMap", `{{ Len .M }}`, struct{M map[string]int}{map[string]int{"a":1, "b":2}}, "2"},
-
+		{"Truncate", `{{ Truncate .S 10 false "..." }}`, struct{ S string }{"This is a long string"}, "This is..."},
+		{"TruncateShort", `{{ Truncate .S 10 false "..." }}`, struct{ S string }{"Short"}, "Short"},
+		{"FormatDateTime", `{{ FormatDateTime .T }}`, struct{ T time.Time }{time.Date(2023, 1, 1, 15, 30, 0, 0, time.UTC)}, "2023-01-01 15:30:00 UTC"},
+		{"ShortSha", `{{ ShortSha .S }}`, struct{ S string }{"abcdef12345"}, "abcdef12"},
+		{"CommitterName", `{{ CommitterName .S }}`, struct{ S string }{"Real Name (email@example.com)"}, "Real Name"},
+		{"CommitMsgShort", `{{ CommitMsgShort .S }}`, struct{ S string }{"Subject\n\nBody"}, "Subject"},
+		{"LenMap", `{{ Len .M }}`, struct{ M map[string]int }{map[string]int{"a": 1, "b": 2}}, "2"},
 	}
 
 	// Setup for PrepareData (it needs to run to build funcMap)
@@ -142,41 +141,39 @@ func TestHtmlReportAdapter_TemplateFunctions(t *testing.T) {
 	// For now, let's assume the template path logic in PrepareData can find the real template
 	// if the test is run from the project root or similar context.
 	// This is a weakness in this test's isolation.
-	
+
 	// Create a dummy templates dir if running test from package dir
 	// This is to satisfy PrepareData's template search logic
 	_ = os.Mkdir("templates", 0755)
 	_, err := os.Stat("../../templates/report.html.template") // check if main template is accessible
-    if os.IsNotExist(err) {
-         // if not, create a dummy one in local templates folder
-        if err := os.WriteFile("templates/report.html.template", []byte("{{define \"report.html.template\"}}dummy{{end}}"), 0644); err != nil {
-   t.Fatalf("Failed to write dummy template file: %v", err)
-  }
-         t.Log("Using dummy template for HtmlReportAdapter.PrepareData in test")
-    } else {
-        // copy real template to local templates folder
-        realTemplateData, err := os.ReadFile("../../templates/report.html.template")
-  if err != nil {
-   t.Fatalf("Failed to read real template file: %v", err)
-  }
-        if err := os.WriteFile("templates/report.html.template", realTemplateData, 0644); err != nil {
-   t.Fatalf("Failed to write template file: %v", err)
-  }
-        t.Log("Using real template copied to local templates/ for test")
-    }
-    defer os.RemoveAll("templates")
-
+	if os.IsNotExist(err) {
+		// if not, create a dummy one in local templates folder
+		if err := os.WriteFile("templates/report.html.template", []byte("{{define \"report.html.template\"}}dummy{{end}}"), 0600); err != nil {
+			t.Fatalf("Failed to write dummy template file: %v", err)
+		}
+		t.Log("Using dummy template for HtmlReportAdapter.PrepareData in test")
+	} else {
+		// copy real template to local templates folder
+		realTemplateData, err := os.ReadFile("../../templates/report.html.template")
+		if err != nil {
+			t.Fatalf("Failed to read real template file: %v", err)
+		}
+		if err := os.WriteFile("templates/report.html.template", realTemplateData, 0600); err != nil {
+			t.Fatalf("Failed to write template file: %v", err)
+		}
+		t.Log("Using real template copied to local templates/ for test")
+	}
+	defer os.RemoveAll("templates")
 
 	err = adapter.PrepareData(data) // This populates funcMap
 	if err != nil {
 		// If this fails due to template not found, the funcMap won't be tested.
 		// This highlights the need for go:embed or better template path management.
-		t.Fatalf("HtmlReportAdapter.PrepareData() failed: %v. FuncMap might not be available for test.", err)
+		t.Fatalf("HTMLReportAdapter.PrepareData() failed: %v. FuncMap might not be available for test.", err)
 	}
 
-
 	for _, tc := range testCases {
-		t.Run(tc.name, func(t *testing.T) {
+		t.Run(tc.name, func(_ *testing.T) {
 			// The funcMap is internal to PrepareData's scope when it creates the template.
 			// To test these, we'd ideally extract funcMap or test PrepareData's output.
 			// The current adapter.reportBuf contains the full rendered template.
@@ -192,7 +189,7 @@ func TestHtmlReportAdapter_TemplateFunctions(t *testing.T) {
 	// Since direct testing of funcMap is hard without refactoring,
 	// let's ensure PrepareData runs and produces some output.
 	if adapter.reportBuf.Len() == 0 {
-		t.Error("HtmlReportAdapter.PrepareData() produced an empty report buffer.")
+		t.Error("HTMLReportAdapter.PrepareData() produced an empty report buffer.")
 	}
 	if !strings.Contains(adapter.reportBuf.String(), data.Metadata.Repo.Commit.SHA) {
 		t.Errorf("HTML report does not contain expected SHA %s", data.Metadata.Repo.Commit.SHA)
@@ -200,31 +197,29 @@ func TestHtmlReportAdapter_TemplateFunctions(t *testing.T) {
 
 }
 
-
-func TestHtmlReportAdapter_Write(t *testing.T) {
+func TestHTMLReportAdapter_Write(t *testing.T) {
 	data := getTestCollectedData()
-	adapter := &HtmlReportAdapter{}
+	adapter := &HTMLReportAdapter{}
 
 	// Need to ensure template can be found by PrepareData
 	_ = os.Mkdir("templates", 0755)
-	realTemplateData, err := os.ReadFile("../../templates/report.html.template") 
-    if os.IsNotExist(err) {
-        if err := os.WriteFile("templates/report.html.template", []byte("{{define \"report.html.template\"}}SHA: {{.Data.Metadata.Repo.Commit.SHA}}{{end}}"), 0644); err != nil {
-   t.Fatalf("Failed to write dummy template file: %v", err)
-  }
-    } else {
-		if err := os.WriteFile("templates/report.html.template", realTemplateData, 0644); err != nil {
+	realTemplateData, err := os.ReadFile("../../templates/report.html.template")
+	if os.IsNotExist(err) {
+		if err := os.WriteFile("templates/report.html.template", []byte("{{define \"report.html.template\"}}SHA: {{.Data.Metadata.Repo.Commit.SHA}}{{end}}"), 0600); err != nil {
+			t.Fatalf("Failed to write dummy template file: %v", err)
+		}
+	} else {
+		if err := os.WriteFile("templates/report.html.template", realTemplateData, 0600); err != nil {
 			t.Fatalf("Failed to write template file: %v", err)
 		}
 	}
-    defer os.RemoveAll("templates")
-
+	defer os.RemoveAll("templates")
 
 	err = adapter.PrepareData(data)
 	if err != nil {
-		t.Fatalf("HtmlReportAdapter.PrepareData() error = %v", err)
+		t.Fatalf("HTMLReportAdapter.PrepareData() error = %v", err)
 	}
-	
+
 	tmpDir, err := os.MkdirTemp("", "reporttest_html_")
 	if err != nil {
 		t.Fatalf("Failed to create temp dir: %v", err)
@@ -233,7 +228,7 @@ func TestHtmlReportAdapter_Write(t *testing.T) {
 
 	outputFile := filepath.Join(tmpDir, "report.html")
 	if err := adapter.Write(outputFile); err != nil {
-		t.Fatalf("HtmlReportAdapter.Write() error = %v", err)
+		t.Fatalf("HTMLReportAdapter.Write() error = %v", err)
 	}
 
 	fileInfo, err := os.Stat(outputFile)
@@ -253,6 +248,5 @@ func TestHtmlReportAdapter_Write(t *testing.T) {
 	// This depends on chart generation succeeding.
 	// Since we removed the chart import, we'll skip this check
 	t.Log("Skipping chart content check as chart import was removed.")
-
 
 }

@@ -115,7 +115,7 @@ func IterateCommits(repo *git.Repository, head *object.Commit) ([]*object.Commit
 
 // GetFilePaths lists all files tracked by git at the given commit.
 // Similar to `repo.git.ls_files()` in the Python code.
-func GetFilePaths(repo *git.Repository, commit *object.Commit) ([]string, error) {
+func GetFilePaths(_ *git.Repository, commit *object.Commit) ([]string, error) {
 	tree, err := commit.Tree()
 	if err != nil {
 		return nil, fmt.Errorf("could not get tree for commit %s: %w", commit.Hash.String(), err)
@@ -149,7 +149,7 @@ func GetFilePaths(repo *git.Repository, commit *object.Commit) ([]string, error)
 // This is a complex function to port directly from GitPython's `repo.blame_incremental`
 // or `repo.blame`. `go-git` provides `git.Blame(c *object.Commit, path string) (*object.BlameResult, error)`.
 // We need to process `object.BlameResult.Lines` to aggregate per contributor.
-func GetBlameForFile(repo *git.Repository, commit *object.Commit, filePath string) (*models.FileBlameStats, error) {
+func GetBlameForFile(_ *git.Repository, commit *object.Commit, filePath string) (*models.FileBlameStats, error) {
 	// Placeholder for the return structure
 	blameStats := &models.FileBlameStats{
 		LinesByContributor: make(map[string]int),
@@ -276,22 +276,24 @@ func GetCommitStats(commit *object.Commit) (insertions, deletions int, filesChan
 	for _, filePatch := range patch.FilePatches() {
 		from, to := filePatch.Files()
 		var fileName string
-		if to != nil {
+		switch {
+		case to != nil:
 			fileName = to.Path()
-		} else if from != nil { // File was deleted
+		case from != nil: // File was deleted
 			fileName = from.Path()
-		} else {
+		default:
 			continue // Should not happen
 		}
 
 		// Get stats manually since FilePatch doesn't have a Stats method
 		var addition, deletion int
 		for _, chunk := range filePatch.Chunks() {
-			if chunk.Type() == 0 { // Equal
+			switch chunk.Type() {
+			case 0: // Equal
 				continue
-			} else if chunk.Type() == 1 { // Add
+			case 1: // Add
 				addition += len(chunk.Content())
-			} else if chunk.Type() == 2 { // Delete
+			case 2: // Delete
 				deletion += len(chunk.Content())
 			}
 		}

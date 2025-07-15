@@ -18,10 +18,10 @@ func TestPopulateHTMLChartData(t *testing.T) {
 			"User A": {CommitCount: 10, Insertions: 100, Deletions: 50},
 		},
 	}
-	
+
 	// Test with normal data
 	htmlCharts, err := PopulateHTMLChartData(data)
-	
+
 	// Verify no error is returned
 	if err != nil {
 		t.Errorf("PopulateHTMLChartData() returned error: %v", err)
@@ -38,12 +38,12 @@ func TestPopulateHTMLChartData(t *testing.T) {
 		Contributors: map[string]models.Contributor{},
 	}
 	emptyCharts, err := PopulateHTMLChartData(emptyData)
-	
+
 	// Verify no error is returned
 	if err != nil {
 		t.Errorf("PopulateHTMLChartData() with empty data returned error: %v", err)
 	}
-	
+
 	// Verify all fields are empty
 	if emptyCharts != expectedEmptyStruct {
 		t.Errorf("PopulateHTMLChartData() with empty data expected empty struct, got: %+v", emptyCharts)

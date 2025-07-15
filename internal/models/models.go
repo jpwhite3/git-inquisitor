@@ -4,10 +4,10 @@ import "time"
 
 // CollectedData is the main structure holding all analyzed repository data.
 type CollectedData struct {
-	Metadata     Metadata                `json:"metadata"`
-	Contributors map[string]Contributor  `json:"contributors"`
-	Files        map[string]FileData     `json:"files"`
-	History      []CommitHistoryItem     `json:"history"`
+	Metadata     Metadata               `json:"metadata"`
+	Contributors map[string]Contributor `json:"contributors"`
+	Files        map[string]FileData    `json:"files"`
+	History      []CommitHistoryItem    `json:"history"`
 }
 
 // Metadata holds information about the collection process and the repository.
@@ -45,36 +45,36 @@ type CommitDetails struct {
 
 // Contributor stores statistics for a repository contributor.
 type Contributor struct {
-	Identities   []string `json:"identities"` // List of emails
-	CommitCount  int      `json:"commit_count"`
-	Insertions   int      `json:"insertions"`
-	Deletions    int      `json:"deletions"`
-	ActiveLines  int      `json:"active_lines"`
+	Identities  []string `json:"identities"` // List of emails
+	CommitCount int      `json:"commit_count"`
+	Insertions  int      `json:"insertions"`
+	Deletions   int      `json:"deletions"`
+	ActiveLines int      `json:"active_lines"`
 }
 
 // FileData stores statistics for a single file in the repository.
 type FileData struct {
-	DateIntroduced      time.Time         `json:"date_introduced"` // Or use string if time is not always available initially
-	OriginalAuthor      string            `json:"original_author"` // Format: "Name (email)"
-	TotalCommits        int               `json:"total_commits"`
-	TotalLines          int               `json:"total_lines"`
-	TopContributor      string            `json:"top_contributor"` // Format: "Name (X.XX%)"
-	LinesByContributor  map[string]int    `json:"lines_by_contributor"`
+	DateIntroduced     time.Time      `json:"date_introduced"` // Or use string if time is not always available initially
+	OriginalAuthor     string         `json:"original_author"` // Format: "Name (email)"
+	TotalCommits       int            `json:"total_commits"`
+	TotalLines         int            `json:"total_lines"`
+	TopContributor     string         `json:"top_contributor"` // Format: "Name (X.XX%)"
+	LinesByContributor map[string]int `json:"lines_by_contributor"`
 }
 
 // FileBlameStats stores blame information for a file.
 type FileBlameStats struct {
-	DateIntroduced     time.Time         `json:"date_introduced"`
-	OriginalAuthor     string            `json:"original_author"`
-	TotalCommits       int               `json:"total_commits"`
-	TotalLines         int               `json:"total_lines"`
-	TopContributor     string            `json:"top_contributor"`
-	LinesByContributor map[string]int    `json:"lines_by_contributor"`
+	DateIntroduced     time.Time      `json:"date_introduced"`
+	OriginalAuthor     string         `json:"original_author"`
+	TotalCommits       int            `json:"total_commits"`
+	TotalLines         int            `json:"total_lines"`
+	TopContributor     string         `json:"top_contributor"`
+	LinesByContributor map[string]int `json:"lines_by_contributor"`
 }
 
 // CommitHistoryItem represents a single commit in the repository's history.
 type CommitHistoryItem struct {
-	Commit      string    `json:"commit"` // SHA
+	Commit      string    `json:"commit"`  // SHA
 	Parents     []string  `json:"parents"` // List of parent SHAs
 	Tree        string    `json:"tree"`
 	Contributor string    `json:"contributor"` // Format: "Name (email)"
