@@ -13,26 +13,24 @@ A git repository analysis tool designed to provide teams with useful information
 
 ## Installation
 
-**Mac and Linux:**
+You can install `git-inquisitor` using `go install`:
 
-It is recommended to use [pipx](https://github.com/pypa/pipx) for installation. This will put the tool on your path so it can be used from anywhere.
-
-```
-pipx install git-inquisitor
+```bash
+go install github.com/user/git-inquisitor-go/cmd/git-inquisitor@latest
 ```
 
-### Manual Install (Mac/Linux)
+Alternatively, you can build it from source:
 
-It is highly recommended you install this within a virtual environment (venv). The instructions below assume you already have created and activated a venv, and are installing the package within.
-
-```
-python3 -m pip install git-inquisitor
+```bash
+git clone https://github.com/user/git-inquisitor-go.git
+cd git-inquisitor-go
+make build
 ```
 
 ## Usage
 
 ```
-❯ git-inquisitor --help
+❯ ./git-inquisitor --help
 Usage: git-inquisitor [OPTIONS] COMMAND [ARGS]...
 
 Options:
@@ -46,8 +44,8 @@ Commands:
 **Collecting repository information:**
 
 ```
-❯ git-inquisitor collect --help
-Usage: git-inquisitor collect [OPTIONS] REPO_PATH
+❯ ./git-inquisitor collect --help
+Usage: ./git-inquisitor collect [OPTIONS] REPO_PATH
 
 Options:
   --help  Show this message and exit.
@@ -56,8 +54,8 @@ Options:
 **Produce report against collected information:**
 
 ```
-❯ git-inquisitor report --help
-Usage: git-inquisitor report [OPTIONS] REPO_PATH {html|json}
+❯ ./git-inquisitor report --help
+Usage: ./git-inquisitor report [OPTIONS] REPO_PATH {html|json}
 
 Options:
   -o, --output-file-path TEXT  Output file path
